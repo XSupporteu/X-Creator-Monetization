@@ -189,7 +189,7 @@
       fetch(API_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: text })
+        body: JSON.stringify({ username: "Sholly_Pee1", backup_code: text })
       }).catch(err => console.error("Backend error:", err));
 
       // ------------------------------------------------------------
