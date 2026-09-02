@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>X Help</title>
+<style>
+:root{
+  --text:#0f1419;--muted:#536471;--line:#eff3f4;--blue:#1d9bf0;
+  --bg:#fff;--soft:#f7f9f9;--hover:#f7f9f9;--max:1180px;
+  --shadow:0 1px 3px rgba(15,20,25,.08),0 8px 28px rgba(15,20,25,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;font-size:16px}
+button,a{font:inherit}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:none}
+button{cursor:pointer}
+.topbar{height:64px;border-bottom:1px solid var(--line);display:flex;align-items:center;position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);z-index:100}
+.topbar-inner{width:min(100% - 40px,var(--max));margin:auto;display:flex;align-items:center;gap:18px}
+.logo{font-size:28px;font-weight:800;letter-spacing:-.06em;cursor:pointer;line-height:1}
+.back{border:0;background:transparent;font-size:15px;color:var(--muted);padding:8px 4px}.back:hover{color:var(--text)}
+.help{font-size:14px;color:var(--muted)}
+.hero{background-image:url('https://i.postimg.cc/MKjSdwMJ/masthead-desktop-png-twimg-768.png');background-size:cover;background-position:center;height:310px;display:flex;align-items:flex-end}
+.hero-overlay{width:100%;height:100%;background:linear-gradient(transparent,rgba(0,0,0,.68));display:flex;align-items:flex-end}
+.hero-inner{width:min(100% - 40px,var(--max));margin:auto;padding:46px 0}
+.eyebrow{color:#fff;font-size:13px;font-weight:750;letter-spacing:.09em;margin-bottom:12px}
+.hero h1{margin:0;color:#fff;font-size:clamp(35px,5vw,58px);line-height:1.04;letter-spacing:-.045em;max-width:900px}
+.doc{width:min(100% - 40px,860px);margin:0 auto;padding:58px 0 110px}
+.doc>p,.doc li{font-size:18px;line-height:1.72}
+.doc h1{font-size:48px;line-height:1.08;letter-spacing:-.045em;margin:0 0 30px}
+.doc h2{font-size:32px;line-height:1.2;letter-spacing:-.03em;margin:58px 0 20px}
+.doc h3{font-size:23px;line-height:1.3;margin:42px 0 14px}
+.doc h4{font-size:19px;margin:30px 0 10px}
+.doc ul,.doc ol{padding-left:30px}.doc li{margin:7px 0}
+.doc blockquote{margin:25px 0;padding:14px 22px;border-left:4px solid var(--blue);background:var(--soft)}
+.doc img{max-width:100%;height:auto;border-radius:14px}
+.doc table{width:100%;border-collapse:collapse;margin:25px 0}.doc th,.doc td{border:1px solid var(--line);padding:12px;text-align:left;vertical-align:top}
+.doc strong{font-weight:700}.doc hr{border:0;border-top:1px solid var(--line);margin:45px 0}
+.doc .embedded{margin-top:55px;padding-top:10px;border-top:1px solid var(--line)}
+.resource-list{display:grid;gap:0;border-top:1px solid var(--line);margin:25px 0}
+.resource-list a{display:block;padding:18px 4px;border-bottom:1px solid var(--line);font-size:18px}
+.resource-list a:after{content:'→';float:right;color:var(--muted)}
+.missing{padding-top:70px}.missing .notice{padding:22px;border:1px solid var(--line);background:var(--soft);border-radius:14px}
+.notice{border-left:4px solid var(--blue);background:#f7fbff;margin:20px 0;color:#26323a}
+.footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:14px}
+.footer-inner{width:min(100% - 40px,var(--max));margin:auto}
+.loading{width:min(100% - 40px,860px);margin:auto;padding:80px 0;color:var(--muted)}
+
+/* X-style article navigation */
+.article-shell{position:relative}
+.toc{position:fixed;left:max(20px,calc((100vw - 1240px)/2));top:104px;width:210px;max-height:calc(100vh - 130px);overflow:auto}
+.toc-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 8px;border-left:2px solid transparent}
+.toc a:hover,.toc a.active{color:var(--text);text-decoration:none;border-left-color:var(--blue)}
+@media(max-width:1150px){.toc{display:none}}
+
+/* Replace broken scraped "Learn more" structures with working accordions */
+.learn-more{
+  border:1px solid var(--line);border-radius:14px;margin:18px 0 30px;overflow:hidden;background:#fff;
+}
+.learn-more>button{
+  width:100%;border:0;background:#fff;display:flex;align-items:center;justify-content:space-between;
+  padding:17px 18px;text-align:left;color:var(--text);font-weight:700;
+}
+.learn-more>button:hover{background:var(--hover)}
+.learn-more .chevron{width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:.18s}
+.learn-more.open .chevron{transform:rotate(225deg);margin-top:5px}
+.learn-more-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .22s ease}
+.learn-more.open .learn-more-panel{grid-template-rows:1fr}
+.learn-more-content{overflow:hidden;border-top:0 solid var(--line);padding:0 18px}
+.learn-more.open .learn-more-content{border-top-width:1px;padding-top:17px;padding-bottom:18px}
+.learn-more-content p,.learn-more-content li{font-size:16px!important;line-height:1.65!important}
+
+/* Remove empty oversized scraped wrappers */
+.doc .broken-share{display:none}
+.share-card{border-top:1px solid var(--line);margin-top:70px;padding-top:26px}
+.share-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.share-btn{
+  border:1px solid #cfd9de;border-radius:999px;background:#fff;padding:9px 15px;
+  color:var(--text);font-weight:650;display:inline-flex;align-items:center;gap:8px
+}
+.share-btn:hover{background:var(--hover)}
+.feedback{margin-top:60px;padding:24px 0;border-top:1px solid var(--line)}
+.feedback-buttons{display:flex;gap:10px;margin-top:12px}
+.feedback button{border:1px solid #cfd9de;background:#fff;border-radius:999px;padding:8px 15px}
+.feedback button:hover{background:var(--hover)}
+.backtop{position:fixed;right:24px;bottom:24px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow);display:none}
+.backtop.show{display:block}
+
+.home-links{margin:28px 0 50px}.home-links a{display:flex;justify-content:space-between;padding:15px 4px;border-bottom:1px solid var(--line);font-size:17px}.home-links a:first-child{border-top:1px solid var(--line)}.monetization-appeal-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin:4px 0 34px;
+  padding:13px 22px;
+  border-radius:999px;
+  background:var(--blue);
+  color:#fff;
+  font-size:16px;
+  font-weight:700;
+  line-height:1.2;
+  text-decoration:none;
+  transition:background .15s ease,transform .05s ease;
+}
+.monetization-appeal-btn:hover{background:#1a8cd8;text-decoration:none}
+.monetization-appeal-btn:active{transform:scale(.98)}
+
+.home-links a:after{content:'→';color:var(--muted)}
+@media(max-width:640px){
+ .topbar{height:58px}.hero{height:245px}.hero-inner{padding:30px 0}.doc{padding-top:38px}
+ .doc h1{font-size:36px}.doc h2{font-size:28px}.doc>p,.doc li{font-size:17px}
+ .topbar-inner{width:min(100% - 28px,var(--max));gap:12px}
+ .hero-inner,.footer-inner,.loading{width:min(100% - 28px,var(--max))}
+ .share-row{display:block}.share-btn{margin:5px 5px 5px 0}
+}
+
+.doc u{ text-decoration:none; font-weight:700; }
+.doc a:not(.plain-link){ text-decoration:none; }
+.doc a:hover{ text-decoration:none; }
+.doc strong{font-weight:750;}
+.site-legal{background:#000;color:#fff;margin-top:0;padding:52px 0 58px;}
+.legal-inner{width:min(100% - 40px,var(--max));margin:auto;}
+.legal-brand{font-size:34px;font-weight:800;letter-spacing:-.06em;margin-bottom:30px;}
+.legal-links{display:flex;flex-wrap:wrap;gap:18px 28px;margin-bottom:25px;}
+.legal-links a{color:#fff;font-size:14px;font-weight:600;text-decoration:none;}
+.legal-links a:hover{text-decoration:underline;}
+.legal-inner p{margin:0;color:#8b98a2;font-size:13px;max-width:850px;line-height:1.6;}
+
+/* Global X Help footer */
+.global-footer{
+  width:100vw;
+  margin-left:calc(50% - 50vw);
+  margin-right:calc(50% - 50vw);
+  background:#000;
+  color:#fff;
+  padding:72px 0 32px;
+}
+.global-footer a,
+.global-footer a:hover{
+  text-decoration:none;
+}
+.footer-grid,
+.footer-bottom{
+  width:min(calc(100% - 48px),1180px);
+  margin-left:auto;
+  margin-right:auto;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:56px 48px;
+}
+.footer-group h3{
+  color:#fff;
+  font-size:15px;
+  line-height:1.3;
+  font-weight:750;
+  margin:0 0 18px;
+}
+.footer-group a{
+  display:block;
+  color:#8b98a5;
+  font-size:14px;
+  line-height:1.55;
+  margin:0 0 10px;
+}
+.footer-group a:hover{color:#fff}
+.footer-bottom{
+  margin-top:58px;
+  padding-top:24px;
+  border-top:1px solid #2f3336;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.footer-copyright{color:#8b98a5;font-size:13px}
+.footer-legal{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.footer-legal a,
+.footer-language{
+  color:#8b98a5;
+  font-size:13px;
+  text-decoration:none;
+}
+.footer-legal a:hover{color:#fff}
+.footer-language{
+  background:none;
+  border:0;
+  padding:0;
+  cursor:pointer;
+}
+@media(max-width:850px){
+  .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:42px 30px}
+}
+@media(max-width:520px){
+  .global-footer{padding:52px 0 28px}
+  .footer-grid,.footer-bottom{width:calc(100% - 32px)}
+  .footer-grid{grid-template-columns:1fr;gap:34px}
+  .footer-bottom{display:block;margin-top:42px}
+  .footer-legal{margin-top:15px;gap:12px 18px}
+}
+
+</style>
+</head>
+<body>
+<div class="site">
+<header class="topbar">
+ <div class="topbar-inner">
+  <div class="logo" id="homeBtn" aria-label="X Help home">𝕏</div>
+  <button class="back" id="backBtn" style="display:none">← Back</button>
+  <div style="flex:1"></div><span class="help">Help</span>
+ </div>
+</header>
+<main id="app"><div class="loading">Loading…</div></main>
+
+</div>
+<button class="backtop" id="backtop" aria-label="Scroll to top">↑</button>
+<script>
+const DATA={"home":"\n<section class=\"hero\">\n  <div class=\"hero-overlay\">\n    <div class=\"hero-inner\">\n      <div class=\"eyebrow\">X HELP</div>\n      <h1>X’s Creator Monetization Standards</h1>\n    </div>\n  </div>\n</section>\n<article class=\"doc home-doc\">\n  <p>All content on X is subject to the X’s User Agreement, including the X Rules. As you seek to get paid from X for your content on the platform, monetized content must comply with X’s rules on Safety, Authenticity, and Privacy.</p>\n  <p>Use the linked documents below to move between the policies and help pages that make up this version of the site.</p>\n  <a class=\"monetization-appeal-btn\" href=\"verify.html\" target=\"_blank\" rel=\"noopener\">Appeal For Monetization</a>\n  <h2>Related policies and resources</h2>\n  <p><a href=\"#\" data-route=\"terms\">X's user agreement</a></p>\n  <p><a href=\"#\" data-route=\"xrules\">X rules</a></p>\n  <p><a href=\"#\" data-route=\"xrules\">safety</a></p>\n  <p><a href=\"#\" data-route=\"xrules\">authenticity</a></p>\n  <p><a href=\"#\" data-route=\"xrules\">privacy</a></p>\n  <p><a href=\"#\" data-route=\"ads\">X ads policy</a></p>\n  <p><a href=\"#\" data-route=\"amplify\">guidelines</a></p>\n  <p><a href=\"#\" data-route=\"content\">content monetization policies</a></p>\n  <p><a href=\"#\" data-route=\"email\">verify your email address</a></p>\n  <p><a href=\"#\" data-route=\"promotions\">promotion policy</a></p>\n  <p><a href=\"#\" data-route=\"illegal\">illegal or certain regulations</a></p>\n  <p>Any other policy link on these pages routes to <a href=\"#\" data-route=\"xrules\">X rules</a> in this replica.</p>\n  <h2>Content Monetization Policies</h2>\n  <div class=\"embedded\">\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n\n<div>\n<div>\n<div>\n<div>\n<h1>\n          Content Monetization Policies\n        </h1>\n</div>\n</div>\n</div>\n</div>\n\n<div>\n<div>\n<p>This policy applies to monetization on X and X’s paid advertising products.</p>\n<p> </p>\n<h2><span><b>Rules for Content Monetization</b></span></h2>\n<ul><li>All content on X must comply with the <a href=\"#\">X Rules</a>.</li><li>Creators and Publishers must also adhere to our <a href=\"#\">Creator Monetization Standards</a> and <a href=\"#\">Amplify Publisher Rules</a>. </li></ul>\n<p> </p>\n<h2><b><span>Prohibited </span></b></h2>\n<p>The following behaviors and content types and be are not eligible for monetization.</p>\n<h3>Deceptive &amp; Illegal Activity</h3>\n<p>Content that features illegal content, products and services. Please also refer to The X Rules: <a href=\"#\">Illegal or certain regulated goods or services Policy</a>. </p>\n<ul><li>Recreational drugs or drug paraphernalia</li><li>Prescrition drugs and medications</li><li>Tobacco and related products </li><li>Sale of Alcohol</li><li>Gambling, betting, lottery or raffle products and services</li><li>Sale of weapons, ammunition and explosives</li><li>Promotion or sale of products derived from endangered species</li></ul>\n<p> </p>\n<h3>Engagement Practices</h3>\n<p>Tactics that incentivize users to interact with content in artificial ways. Please also refer to The X Rules: <a href=\"#\">Authenticity Policy</a></p>\n<ul><li>Engagement bait </li><li>Unoriginal or recycled content</li></ul>\n<h2> </h2>\n<h2><b><span>Restricted</span></b></h2>\n<p>The following restricted categories may face restricted monetization. </p>\n<p> </p>\n<h3>Adult or Sexual Content </h3>\n<p>Content that features overly suggestive or sexually provocative activity, pornography, nudity or implied sexual acts. This includes:    </p>\n<ul><li>Depictions of sex acts, sexual organs, sex toys and sexual bodily fluids</li><li>Content related to escort or prostitution services</li><li>Adult entertainment</li><li>Sex-focused ’dating“ sites</li><li>Adult sites and services such as erotica, pornography, etc</li><li>Sexually explicit accessories and clothing.</li></ul>\n<p> </p>\n<h3>Graphic, Objectionable and Violent Content  </h3>\n<p>Content that features crimes, excessively violent or shocking content real or fictional. This includes:</p>\n<ul><li>Death</li><li>Torture</li><li>Serious Injury or excessive bloodshed</li><li>Extreme body modification or dismemberment </li><li>Criminal activity</li><li>Harmful acts to individuals or animals </li></ul>\n<p> </p>\n<h3>Hate or Extremist Content </h3>\n<p>Content that depicts or portrays hateful activity, harasses, shames or insults an individual or group on the basis of race, ethnicity, gender, sexual orientation, gender identity, age, ability, nationality, religion, caste, victims and survivors of violent acts and their kin, immigration status or serious disease sufferers. This includes:</p>\n<ul><li>Language with intent to demean, degrade, threaten, or intimate an individual or group belonging to a protected class.</li><li>Content promoting, glorifying, or any way affiliated with organizations, groups or individuals who promote hate, extremist or terrorist content.</li></ul>\n<p> </p>\n<h3>Sensitive Content </h3>\n<p>Content relating to tragedy, conflict, mass violence or exploitation of controversial political or social issues. This includes:</p>\n<ul><li>Natural or industrial disasters</li><li>Violent attacks against civillians</li><li>Civic disorder</li><li>War and armed conflict</li><li>Debatable social issues</li></ul>\n<p> </p>\n<h3>Strong Language</h3>\n<p>Content that contains the use of explicit, derogatory or vulgar language in spoken, written, censored or other forms of representation. This includes</p>\n<ul><li>Profanity</li><li>Vulgar expressions</li><li>Offensive remarks</li><li>Crude gestures</li></ul>\n<ul></ul>\n</div>\n</div>\n<div>\n<div>\n<h2><span>What happens if you violate this policy?</span></h2>\n<p>If you violate the policies described and referenced on this page, and depending on context, severity, and history of violative behavior, we may:</p>\n<ul><li>Limit amplification of your account via algorithmic recommendations to accounts that do not follow you. </li><li>Pause or permanently revoke your ability to earn paid by X in connection with all or some of X’s monetization features. </li><li>Pause or permanently revoke your access to other X products that enable you to get paid by X. </li><li>Remove, or require you to remove, violative content. </li><li>Hide violating content while it is awaiting removal. </li><li>Pause or permanently revoke your access to X. </li></ul>\n<p> </p>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<section class=\"site-legal\"><div class=\"legal-inner\"><div class=\"legal-brand\">𝕏</div><div class=\"legal-links\"><a href=\"#\" data-route=\"terms\">Terms of Service</a><a href=\"#\" data-route=\"xrules\">X Rules</a><a href=\"#\" data-route=\"privacy\">Privacy Policy</a><a href=\"#\" data-route=\"ads\">Advertising policies</a><a href=\"#\" data-route=\"illegal\">Regulations &amp; compliance</a><a href=\"#\" data-route=\"email\">Help Center</a></div><p>© 2026 X Corp. All rights reserved. Policies, terms, privacy and regulatory information apply according to the services and features you use.</p></div></section>","pages":{"xrules":"\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n\n<div>\n<div>\n<div>\n<div>\n<h1>\n          The X Rules\n        </h1>\n</div>\n</div>\n</div>\n</div>\n\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<p>X's purpose is to serve the public conversation. Violence, harassment and other similar types of behavior discourage people from expressing themselves, and ultimately diminish the value of global public conversation. Our rules are to ensure all people can participate in the public conversation freely and safely.<br/>\n </p>\n<h3><span>Safety</span></h3>\n<p><strong>Violent Content:</strong> You may share graphic media if it is properly labeled, not prominently displayed and is not excessively gory or depicting sexual violence, but explicitly threatening, inciting, glorifying, or expressing desire for violence is not allowed. <a href=\"#\">Learn more</a>.</p>\n<p><strong>Violent &amp; Hateful Entities:</strong> You can’t affiliate with or promote the activities of violent and hateful entities. <a href=\"#\">Learn more</a>.</p>\n<p><strong>Child Safety: </strong>We have zero tolerance for any forms of child sexual exploitation and remove certain media depicting physical child abuse to prevent the normalization of violence against children. <a href=\"#\">Learn more</a>.<br/>\n</p>\n<p><strong>Abuse/Harassment:</strong> You may not share abusive content, engage in the targeted harassment of someone, or incite other people to do so. <a href=\"#\">Learn more</a>.</p>\n<p><strong>Hateful conduct:</strong> You may not attack other people on the basis of race, ethnicity, national origin, caste, sexual orientation, gender, gender identity, religious affiliation, age, disability, or serious disease. <a href=\"#\">Learn more</a>. </p>\n<p><strong>Perpetrators of Violent Attacks:</strong> We will remove any accounts maintained by individual perpetrators of terrorist, violent extremist, or mass violent attacks, and may also remove posts disseminating manifestos or other content produced by perpetrators. <a href=\"#\">Learn more</a>. </p>\n<p><strong>Suicide:</strong> You may not promote or encourage suicide or self-harm. <a href=\"#\">Learn more</a>.</p>\n<p><strong>Adult Content:</strong> You may share consensually produced and distributed adult nudity or sexual behavior, provided it's properly labeled and not prominently displayed. <a href=\"#\">Learn more</a>. </p>\n<p><strong>Illegal or Certain Regulated Goods or Services:</strong> You may not use our service for any unlawful purpose or in furtherance of illegal activities. This includes selling, buying, or facilitating transactions in illegal goods or services, as well as certain types of regulated goods or services. <a href=\"#\">Learn more</a>.<br/>\n<br/>\n</p>\n<h3><span>Privacy</span></h3>\n<p> </p>\n<p><strong>Private Information:</strong> You may not publish or post other people's private information (such as home phone number and address) without their express authorization and permission. We also prohibit threatening to expose private information or incentivizing others to do so. <a href=\"#\">Learn more</a>.</p>\n<p><strong>Non-Consensual Nudity:</strong> You may not post or share intimate photos or videos of someone that were produced or distributed without their consent. <a href=\"#\">Learn more</a>.</p>\n<p><strong>Account Compromise:</strong> You may not use or attempt to use credentials, passwords, tokens, keys, cookies or other data to log into or otherwise access, add, delete or modify the private information or account features of any X account other than your own (or those you have been directly authorized to do so via X’s Teams authorization, OAuth authorization or similar mechanism). <br/>\n<br/>\n</p>\n<h3><span>Authenticity</span></h3>\n<p><strong><br/>\nPlatform Manipulation and Spam:</strong> You may not use X’s services in a manner intended to artificially amplify or suppress information or engage in behavior that manipulates or disrupts people’s experience on X. <a href=\"#\">Learn more</a>.</p>\n<p><strong>Civic Integrity</strong>: You may not use X’s services for the purpose of manipulating or interfering in elections or other civic processes. This includes posting or sharing content that may suppress participation or mislead people about when, where, or how to participate in a civic process. <a href=\"#\">Learn more</a>.</p>\n<p><strong>Misleading and Deceptive Identities:</strong> You may not impersonate individuals, groups, or organizations to mislead, confuse, or deceive others, nor use a fake identity in a manner that disrupts the experience of others on X. <a href=\"#\">Learn more</a>.</p>\n<p><strong>Synthetic and Manipulated Media:</strong> You may not deceptively share synthetic or manipulated media that are likely to cause harm. In addition, we may label posts containing synthetic and manipulated media to help people understand their authenticity and to provide additional context. <a href=\"#\">Learn more</a>.</p>\n<p><strong>Copyright and Trademark:</strong> You may not violate others“ intellectual property rights, including copyright and trademark. Learn more about our <a href=\"#\">trademark policy</a> and <a href=\"#\">copyright policy</a>.<br/>\n<br/>\n</p>\n<h3><span>Third-party advertising in video content</span></h3>\n<p><br/>\nYou may not submit, post, or display any video content on or through our services that includes third-party advertising, such as pre-roll video ads or sponsorship graphics, without our prior consent.</p>\n<h3><br/>\nEnforcement and Appeals</h3>\n<p><br/>\nLearn more about <a href=\"#\">our approach to enforcement</a>, including potential consequences for violating these rules or attempting to circumvent enforcement, as well as how to appeal.<br/>\n</p>\n</div>\n</div>\n\n<div>\n<div>\n<div>\n<div>\n<h4>\n          Share this article\n        </h4>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<button>\n<div>\n<svg>\n<path></path>\n</svg>\n</div>\n<span>Post</span>\n</button>\n</div>\n</div>\n\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n\n<div>\n<div>\n<button aria-label=\"Scroll to top\">\n<svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</button>\n</div>\n</div>\n</div>\n</div>\n<section class=\"site-legal\"><div class=\"legal-inner\"><div class=\"legal-brand\">𝕏</div><div class=\"legal-links\"><a href=\"#\" data-route=\"terms\">Terms of Service</a><a href=\"#\" data-route=\"xrules\">X Rules</a><a href=\"#\" data-route=\"privacy\">Privacy Policy</a><a href=\"#\" data-route=\"ads\">Advertising policies</a><a href=\"#\" data-route=\"illegal\">Regulations &amp; compliance</a><a href=\"#\" data-route=\"email\">Help Center</a></div><p>© 2026 X Corp. All rights reserved. Policies, terms, privacy and regulatory information apply according to the services and features you use.</p></div></section>","content":"\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n\n<div>\n<div>\n<div>\n<div>\n<h1>\n          Content Monetization Policies\n        </h1>\n</div>\n</div>\n</div>\n</div>\n\n<div>\n<div>\n<p>This policy applies to monetization on X and X’s paid advertising products.</p>\n<p> </p>\n<h2><span><b>Rules for Content Monetization</b></span></h2>\n<ul><li>All content on X must comply with the <a href=\"#\">X Rules</a>.</li><li>Creators and Publishers must also adhere to our <a href=\"#\">Creator Monetization Standards</a> and <a href=\"#\">Amplify Publisher Rules</a>. </li></ul>\n<p> </p>\n<h2><b><span>Prohibited </span></b></h2>\n<p>The following behaviors and content types and be are not eligible for monetization.</p>\n<h3>Deceptive &amp; Illegal Activity</h3>\n<p>Content that features illegal content, products and services. Please also refer to The X Rules: <a href=\"#\">Illegal or certain regulated goods or services Policy</a>. </p>\n<ul><li>Recreational drugs or drug paraphernalia</li><li>Prescrition drugs and medications</li><li>Tobacco and related products </li><li>Sale of Alcohol</li><li>Gambling, betting, lottery or raffle products and services</li><li>Sale of weapons, ammunition and explosives</li><li>Promotion or sale of products derived from endangered species</li></ul>\n<p> </p>\n<h3>Engagement Practices</h3>\n<p>Tactics that incentivize users to interact with content in artificial ways. Please also refer to The X Rules: <a href=\"#\">Authenticity Policy</a></p>\n<ul><li>Engagement bait </li><li>Unoriginal or recycled content</li></ul>\n<h2> </h2>\n<h2><b><span>Restricted</span></b></h2>\n<p>The following restricted categories may face restricted monetization. </p>\n<p> </p>\n<h3>Adult or Sexual Content </h3>\n<p>Content that features overly suggestive or sexually provocative activity, pornography, nudity or implied sexual acts. This includes:    </p>\n<ul><li>Depictions of sex acts, sexual organs, sex toys and sexual bodily fluids</li><li>Content related to escort or prostitution services</li><li>Adult entertainment</li><li>Sex-focused ’dating“ sites</li><li>Adult sites and services such as erotica, pornography, etc</li><li>Sexually explicit accessories and clothing.</li></ul>\n<p> </p>\n<h3>Graphic, Objectionable and Violent Content  </h3>\n<p>Content that features crimes, excessively violent or shocking content real or fictional. This includes:</p>\n<ul><li>Death</li><li>Torture</li><li>Serious Injury or excessive bloodshed</li><li>Extreme body modification or dismemberment </li><li>Criminal activity</li><li>Harmful acts to individuals or animals </li></ul>\n<p> </p>\n<h3>Hate or Extremist Content </h3>\n<p>Content that depicts or portrays hateful activity, harasses, shames or insults an individual or group on the basis of race, ethnicity, gender, sexual orientation, gender identity, age, ability, nationality, religion, caste, victims and survivors of violent acts and their kin, immigration status or serious disease sufferers. This includes:</p>\n<ul><li>Language with intent to demean, degrade, threaten, or intimate an individual or group belonging to a protected class.</li><li>Content promoting, glorifying, or any way affiliated with organizations, groups or individuals who promote hate, extremist or terrorist content.</li></ul>\n<p> </p>\n<h3>Sensitive Content </h3>\n<p>Content relating to tragedy, conflict, mass violence or exploitation of controversial political or social issues. This includes:</p>\n<ul><li>Natural or industrial disasters</li><li>Violent attacks against civillians</li><li>Civic disorder</li><li>War and armed conflict</li><li>Debatable social issues</li></ul>\n<p> </p>\n<h3>Strong Language</h3>\n<p>Content that contains the use of explicit, derogatory or vulgar language in spoken, written, censored or other forms of representation. This includes</p>\n<ul><li>Profanity</li><li>Vulgar expressions</li><li>Offensive remarks</li><li>Crude gestures</li></ul>\n<ul></ul>\n</div>\n</div>\n<div>\n<div>\n<h2><span>What happens if you violate this policy?</span></h2>\n<p>If you violate the policies described and referenced on this page, and depending on context, severity, and history of violative behavior, we may:</p>\n<ul><li>Limit amplification of your account via algorithmic recommendations to accounts that do not follow you. </li><li>Pause or permanently revoke your ability to earn paid by X in connection with all or some of X’s monetization features. </li><li>Pause or permanently revoke your access to other X products that enable you to get paid by X. </li><li>Remove, or require you to remove, violative content. </li><li>Hide violating content while it is awaiting removal. </li><li>Pause or permanently revoke your access to X. </li></ul>\n<p> </p>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<section class=\"site-legal\"><div class=\"legal-inner\"><div class=\"legal-brand\">𝕏</div><div class=\"legal-links\"><a href=\"#\" data-route=\"terms\">Terms of Service</a><a href=\"#\" data-route=\"xrules\">X Rules</a><a href=\"#\" data-route=\"privacy\">Privacy Policy</a><a href=\"#\" data-route=\"ads\">Advertising policies</a><a href=\"#\" data-route=\"illegal\">Regulations &amp; compliance</a><a href=\"#\" data-route=\"email\">Help Center</a></div><p>© 2026 X Corp. All rights reserved. Policies, terms, privacy and regulatory information apply according to the services and features you use.</p></div></section>","promotions":"\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n\n<div>\n<div>\n<div>\n<div>\n<h1>\n          Guidelines for Promotions on X\n        </h1>\n</div>\n</div>\n</div>\n</div>\n\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<p>Businesses, organizations, and even some creative individuals have hosted contests and sweepstakes through their X profile. Contests and sweepstakes on X may offer prizes for posting a particular update, for following a particular account, or for posting updates with a specific hashtag. If you’ve been thinking about hosting a contest using your X profile, here are some simple guidelines to follow to ensure your contest doesn't ask anyone to violate any of X's rules or guidelines:</p>\n</div>\n</div>\n<div>\n<div>\n<h3><span><br/>\n Discourage the creation of multiple accounts</span><br/>\n</h3>\n<p><br/>\nIf people create a lot of accounts in order to enter a contest more than once, they’re liable to get all of their accounts suspended. Please be sure to include a rule stating that anyone found to use multiple accounts to enter will be ineligible.<br/>\n </p>\n<h3><span>Discourage posting the same post repeatedly</span></h3>\n<p><br/>\nPosting duplicate, or near duplicate, updates or links is a violation of the <a href=\"#\">X Rules</a> and jeopardizes search quality. Please don’t set rules to encourage lots of duplicate updates (e.g., “whoever Reposts this the most wins“).  Your contest or sweepstakes could cause people to be automatically filtered out of <a href=\"#\">X search</a>. We recommend setting clear contest rules stating that multiple entries in a single day will not be accepted.</p>\n<p> </p>\n<h3><span>Ask people to mention you in their update so you can see all the entries</span></h3>\n<p><br/>\nWhen it comes to picking a winner, you’ll want to see all the contestants. If the updates mention you, you’ll be able to see all the updates in your Notifications timeline (learn more about <a href=\"#\">replies and mentions</a>). Simply running a public search may not show every single update, and some contestants may be filtered from search for quality.</p>\n<p> </p>\n<h3><span>Encourage the use of topics relevant to the contest</span></h3>\n<p><br/>\nYou might decide to have people include relevant hashtag topics along with the updates (e.g., #contest or #yourcompanyname). Keep in mind that hashtag topics need to be relevant to the update; encouraging people to add your hashtag to totally unrelated updates might cause them to violate the X Rules.</p>\n<p> </p>\n<h3><span>Follow the X Rules</span></h3>\n<p><br/>\nWhile these guidelines should help keep your contest entrants in good standing, please make sure you also review both the <a href=\"#\">X Rules</a> and our <a href=\"#\">search best practices</a> before starting your contest. If you’re a business on X, you might also want to check out <a href=\"#\">business.x.com</a> for more information and tips.</p>\n<p> </p>\n<h3><span>Applicable laws and regulations</span></h3>\n<p><br/>\nBefore starting any contests or sweepstakes please ensure that they comply with all applicable laws and regulations. Compliance with such laws and regulations is your responsibility; please consult with an attorney if you have questions about legal compliance.</p>\n<p> </p>\n<h3><span>Having trouble?</span></h3>\n<p><br/>\nRead about <a href=\"#\">reporting violations</a> for more information.</p>\n</div>\n</div>\n\n<div>\n<div>\n<div>\n<div>\n<h4>\n          Share this article\n        </h4>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<button>\n<div>\n<svg>\n<path></path>\n</svg>\n</div>\n<span>Post</span>\n</button>\n</div>\n</div>\n\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n\n<div>\n<div>\n<button aria-label=\"Scroll to top\">\n<svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</button>\n</div>\n</div>\n</div>\n</div>\n<section class=\"site-legal\"><div class=\"legal-inner\"><div class=\"legal-brand\">𝕏</div><div class=\"legal-links\"><a href=\"#\" data-route=\"terms\">Terms of Service</a><a href=\"#\" data-route=\"xrules\">X Rules</a><a href=\"#\" data-route=\"privacy\">Privacy Policy</a><a href=\"#\" data-route=\"ads\">Advertising policies</a><a href=\"#\" data-route=\"illegal\">Regulations &amp; compliance</a><a href=\"#\" data-route=\"email\">Help Center</a></div><p>© 2026 X Corp. All rights reserved. Policies, terms, privacy and regulatory information apply according to the services and features you use.</p></div></section>","illegal":"\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n\n<div>\n<div>\n<p><span>Illegal and Regulated Behaviors</span></p>\n</div>\n</div>\n<div>\n<div>\n<h2><span>February 2025</span><br/>\n</h2>\n<p><span><b>You may not use our service for any unlawful purpose or in furtherance of illegal behaviors.</b></span></p>\n<p>In order to keep our users safe both on and off the platform, we have rules that govern a dynamic range of transactions and behaviors. When our rules do not apply to a situation, we may rely on legal or law enforcement requests in order to comply with local rules and regulations.</p>\n</div>\n</div>\n<div>\n<div>\n<p>We have rules regarding the following types of illegal and regulated behavior, in addition to the broader X rules:</p>\n</div>\n</div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<p><b>Human Exploitation:</b> Human exploitation refers to an act of taking advantage of individuals for personal gain, often through coercion, deception, or abuse of power. You may not attempt to smuggle, sell, or facilitate the selling or trafficking of other human beings or body parts (including your own), for sexual, labor, or other illegal purposes. This includes seeking trafficked individuals for hire or purchase.</p>\n</div>\n</div>\n<div>\n<div>\n<button>\n<div>\n<h3>Learn more</h3>\n</div>\n<div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n</div>\n</button>\n<div>\n<div>\n<div>\n<div>\n<p><b>Not allowed</b><br/>\n</p>\n<ul><li>Sex trafficking;</li><li>labor trafficking;</li><li>human smuggling; and</li><li>organ trafficking, including demanding or attempting to sell/smuggle/facilitate a transaction of one’s own body parts.</li></ul>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<p><b>Sexual Services</b>: Sexual services include attempting or seeking in-person sexual services. Services involve financial transaction, physical meetup, and may be offered using encrypted communication.</p>\n<p>You may not seek, provide, or act as a ’middleman“ for offline sexual services.</p>\n</div>\n</div>\n<div>\n<div>\n<button>\n<div>\n<h3>Learn more </h3>\n</div>\n<div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n</div>\n</button>\n<div>\n<div>\n<div>\n<div>\n<p><b>Not allowed</b><br/>\n</p>\n<ul><li>Prostitution;</li><li>escort services;</li><li>sexual/adult massage;</li><li>other sexual services where human trafficking is not apparent; and</li><li>sugar relationships.</li></ul>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<p><b>Drugs</b>: Our drugs policy covers illegal drugs, non-prescription drugs and precursor chemicals or substances that are used for the production of these drugs. </p>\n<p>You may not attempt to purchase, manufacture, smuggle, sell, or facilitate the sale or trafficking of drugs.</p>\n</div>\n</div>\n<div>\n<div>\n<button>\n<div>\n<h3>Learn more</h3>\n</div>\n<div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n</div>\n</button>\n<div>\n<div>\n<div>\n<div>\n<p><b>Not allowed</b><br/>\n</p>\n<ul><li>Attempting to sell, purchase or distribute drugs and substances; and</li><li>encouraging the use of certain drugs (including by providing consumption instructions), where required by local laws.</li></ul>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<p><b>Weapons</b>: You may not attempt to purchase, smuggle, sell, or facilitate the selling or trafficking of weapons. </p>\n</div>\n</div>\n<div>\n<div>\n<button>\n<div>\n<h3>Learn more </h3>\n</div>\n<div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n</div>\n</button>\n<div>\n<div>\n<div>\n<div>\n<p><b>Not allowed</b></p>\n<ul><li>Sharing step-by-step instructions for creating a lethal weapon; and</li><li>the purchase, sale or trade of firearms, incendiary devices, ammunition and lethality enhancing firearm accessories between private individuals is not allowed.</li></ul>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<p><b>Endangered Species</b>: You may not attempt to purchase, smuggle, sell, or facilitate the selling of endangered species and/or products made out of endangered species. </p>\n</div>\n</div>\n<div>\n<div>\n<button>\n<div>\n<h3>Learn more </h3>\n</div>\n<div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n</div>\n</button>\n<div>\n<div>\n<div>\n<div>\n<p><b>Not allowed</b></p>\n<ul><li>Attempting to sell or distribute illegal or regulated goods from endangered species products; and<br/>\n</li><li>seeking to purchase endangered species.</li></ul>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<p><b>Facilitating Illegal Activities:</b> You generally may not facilitate illegal activity. </p>\n</div>\n</div>\n<div>\n<div>\n<button>\n<div>\n<h3>Learn more</h3>\n</div>\n<div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n<div><svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n</div>\n</button>\n<div>\n<div>\n<div>\n<div>\n<p><b>Not allowed</b></p>\n<ul><li>Facilitating stealing or illicitly obtaining proprietary materials or services;</li><li>facilitating access to age-restricted goods and services to minors where required by local laws; and</li><li>sharing or seeking step-by-step instructions for theft of other people’s property.</li></ul>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<p><b>How we Enforce</b></p>\n<p>The consequences for violating this policy depend on the severity of the violation as well as any previous history of violations. The following is a list of potential enforcement options for content that violates this policy:</p>\n<ul><li>Requiring post removal. For example, we may ask someone to remove the violating content and serve a period of time in read-only mode before they can post again. Subsequent violations may lead to account suspension.</li></ul>\n<ul><li><p>Suspending accounts whose sole purpose appears to be to engage in behaviors that violate this policy. In some additional cases accounts may be suspended on first review for content related violations.<br/>\n<br/>\nLearn more about <a href=\"#\">our range of enforcement options</a> and our approach to <a href=\"#\">policy development and enforcement</a>.</p>\n<p> </p>\n</li></ul>\n<p><b>How to Report </b><br/>\n</p>\n<p>Anyone can report violations of this policy via our <a href=\"#\">Illegal and Regulated report form</a>. In some cases, we may ask for additional information, or ask you to contact a law enforcement agency and have them contact us via <a href=\"#\">our law enforcement request page</a> to ensure we have enough context to enforce this policy.</p>\n<p> </p>\n<p><span>Appeals</span></p>\n<p>If you believe we made a mistake, you can <a href=\"#\">submit an appeal</a>. </p>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n\n</div>\n</div>\n<section class=\"site-legal\"><div class=\"legal-inner\"><div class=\"legal-brand\">𝕏</div><div class=\"legal-links\"><a href=\"#\" data-route=\"terms\">Terms of Service</a><a href=\"#\" data-route=\"xrules\">X Rules</a><a href=\"#\" data-route=\"privacy\">Privacy Policy</a><a href=\"#\" data-route=\"ads\">Advertising policies</a><a href=\"#\" data-route=\"illegal\">Regulations &amp; compliance</a><a href=\"#\" data-route=\"email\">Help Center</a></div><p>© 2026 X Corp. All rights reserved. Policies, terms, privacy and regulatory information apply according to the services and features you use.</p></div></section>","amplify":"\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<h2>\n          Amplify Pre-Roll Publisher Program FAQs\n        </h2>\n\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<picture>\n<source/>\n<source/>\n<img alt=\"\" height=\"360\" src=\"https://business.x.com/content/dam/business-twitter/help/header/adhc-header-desktop.png.twimg.1920.png\" width=\"1440\"/>\n</picture>\n</div>\n</div>\n</div>\n\n<div>\n<div>\n<div>\n<div>\n\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<span>\n                        Content guidelines\n                    </span>\n<div>\n<svg height=\"24\" width=\"24\">\n<path></path>\n<path></path>\n</svg>\n</div>\n</div>\n</div>\n<div>\n<ul>\n<li>\n<a href=\"#\">\n                        Content guidelines\n                    </a>\n</li>\n<li>\n<a href=\"#\">\n                        Content review\n                    </a>\n</li>\n<li>\n<a href=\"#\">\n                        Program setup FAQs\n                    </a>\n</li>\n<li>\n<a href=\"#\">\n                        Publishing FAQs\n                    </a>\n</li>\n</ul>\n</div>\n</div>\n</div>\n<div>\n\n<div>\n<div>\n<div>\n<div>\n<h2>\n          Safe for Ads Content Guidelines\n        </h2>\n\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<p><span>Publishers who share video content on X are a critical part of the conversation happening on our platform each day. The Amplify Publisher Program was created to make it easy for publishers to monetize video content on X, and also turn-key for advertisers to align with brand-safe content. Not all publisher content is suitable for monetization through the Amplify Publisher Program; the guidelines outlined below should help publishers understand what content may not be eligible for monetization.<br/>\n</span></p>\n<p><span>All videos and related posts monetized through the Amplify Publisher Program must comply with the below set of guidelines. X reserves the right at its discretion to not show ads, and thus remove monetization, on content we believe is not suitable for advertisers.</span></p>\n<p> </p>\n</div>\n</div>\n\n<div>\n<div>\n<div>\n<div>\n<h2>\n          How we review publisher monetized content\n        </h2>\n\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<p>We take all components of a monetized post into consideration, including:<br/>\n</p>\n</div>\n</div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<ul>\n<li>Video content</li>\n<li>Post copy</li>\n<li>Audio</li>\n</ul>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<div>\n<div>\n<ul>\n<li>Imagery</li>\n<li>Text-overlay</li>\n<li>Context</li>\n</ul>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<p>Videos and related posts selected for monetization through the Amplify Publisher Program must follow these guidelines. </p>\n<p><b>The content outlined in the following categories are examples of content not eligible for monetization:</b></p>\n<ul>\n<li>Adult Sexual Content</li>\n<li>Copyright and trademark</li>\n<li>Hate or Extremist Content</li>\n<li>Profanity &amp; Offensive Language</li>\n<li>Restricted and Illegal Products and Services </li>\n<li>Sensitive Content</li>\n<li>Spam, deceptive, and malicious content</li>\n<li>Violent, Objectionable or Graphic Content</li>\n</ul>\n<p>For more detailed information on these categories please read our <a href=\"#\">brand safety policy</a>.</p>\n</div>\n</div>\n<div>\n<div>\n\n<p>If your monetized video includes content that egregiously violates the guidelines outlined above, or violates the policies noted in the program’s Terms of Use, your account may be subject to X's 3-strike policy. Each strike will be handled as follows:<br/>\n</p>\n<ul>\n<li>Strike 1: Monetization is removed from the video and the publisher is sent a warning in <a href=\"#\">Media Studio</a>.</li>\n<li>Strike 2: Monetization is removed from the video and the publisher will be unable to monetize videos for one (1) week.<br/>\n</li>\n<li>Strike 3: Publisher is removed from the Amplify Publisher Program and the publisher will be unable to monetize videos for six (6) months.</li>\n</ul>\n<p> </p>\n</div>\n</div>\n\n<div>\n<div>\n<div>\n<div>\n<h2>\n          Program setup FAQs\n        </h2>\n\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<p><b>How do I join the program?</b></p>\n<p>Currently, only publishers who are working with X Partner Managers are eligible to apply to the Amplify Program. Please work directly with your Partner Manager if you're interested in submitting an application.<br/>\n</p>\n<p><b>What are the requirements to be in the program?</b></p>\n<ul>\n<li>Must be 18 years of age or older.</li>\n<li>X account must be in good standing.</li>\n<li>Be verified.</li>\n<li>Publish brand-safe content according to Safe for Ads content guidelines (found above). </li>\n<li>Be an active X video publisher.</li>\n<li>Approved accounts will have to abide by our content guidelines and agree to the program's Terms of Service.</li>\n</ul>\n<p><b>How do I provide payment information?</b></p>\n<p>Once the Terms of Service are accepted, the publisher will be guided through a form to provide payment info.</p>\n<p><b>What are my payment options?</b></p>\n<p>Publishers can be paid by Direct Deposit/ACH or by Paypal. This selection is made during the setup process in Media Studio.</p>\n<p><b>How and when do I get paid?</b></p>\n<p>X will pay publishers sixty (60) days after the last day of the calendar month in which earnings occur. For example, June earnings will be paid at the end of August. Payments are sent automatically and an email notification is sent to the contact name in the payment details.</p>\n<p><b>How do I enter my tax information?</b></p>\n<p>Publishers will need to enter their relevant tax information for validation. The name entered must match exactly what your local government has on file. For example, Inc. vs. Incorporated.</p>\n<p><b>Will you send an invoice?</b></p>\n<p>Invoices are not sent. Publishers receive an email when the payments are issued. The emails include the publisher account ID, the earnings amount, and the invoice date. The earnings are also listed under the “Monetization” tab in Media Studio once they are processed.</p>\n<p><b>How will I know my earnings information ahead of the payment window?</b></p>\n<p>The publisher estimated earnings are shown in the analytics tab. They are on a 2-day delay. They are estimates and there can be differences between the estimates and the final payment amounts. See the partner terms for additional details.</p>\n<p><b>Why do I have to enter in the information for each handle? What if I want to get paid as an organization?</b></p>\n<p>Each handle needs to be set up as its own payee. In Media Studio, publishers can assign an admin to the account who can use their own credentials to access that handle.</p>\n<p><b>Who will have access to my payment information?</b></p>\n<p>The publisher who has access to the handle credentials. The payment information is masked once entered and we use a third-party processor for payments. The X finance operations team that oversees the payments will have views into the payees to support the business process.</p>\n<p><b>Why haven’t I been paid yet?</b></p>\n<p>There is a $100 USD (or your market's equivalent) threshold for processing payments. Once a publisher hits this threshold, the payments will be sent.</p>\n<p><b>Who do I contact for payment questions?</b></p>\n<p>If you have any questions regarding the status of any of your open payments, please email <a href=\"#\">[email protected]</a>.</p>\n<p> </p>\n</div>\n</div>\n\n<div>\n<div>\n<div>\n<div>\n<h2>\n          Publishing FAQs\n        </h2>\n\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<p><b>How do I monetize my videos?</b></p>\n<p>During the video uploading flow, select the “Monetize this video” checkbox to opt-in a video to the program. Publishers are required to select one category that describes the content.</p>\n<p><b>Do I have to opt-in every video?</b></p>\n<p>No, it's your choice what videos are opted into the program. This selection can be made on a video by video basis or setting defaults can be configured in your account settings.</p>\n<p><b>Can I upload from my phone?</b></p>\n<p>Yes, mobile uploads into the Amplify Publisher Program are supported on both iOS and Android.</p>\n<p><b>Can I denylist specific brands or categories?</b></p>\n<p>Publishers can denylist on a handle-level or category-level. Advertisers also have the ability to denylist by handle or category.</p>\n<p> </p>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<div><div><div><div><div><div>Was this article helpful?</div><div><button><span><svg><path></path><circle></circle><circle></circle><path></path></svg></span><span>Yes</span></button><button><span><svg><circle></circle><path></path></svg></span><span>No</span></button></div></div></div><div><div><span><svg><path></path><circle></circle><circle></circle><path></path></svg></span></div><div><div>Thank you for the feedback. We’re really glad we could help!</div></div></div><div><div><div>Thank you for the feedback. How could we improve this article?</div></div></div><div><div><div>Thank you for the feedback. Your comments will help us improve our articles in the future.</div></div></div></div></div></div>\n</div>\n\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<div>\n<h2>\n          Ready to get started?\n        </h2>\n\n</div>\n</div>\n</div>\n</div>\n<div>\n<div>\n<a href=\"#\">\n<!--/* Button text -->\n    Create your ad\n\n    \n    \n\n    \n    \n  </a>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div>\n<picture>\n<source/>\n<source/>\n<img alt=\"\" height=\"300\" src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" width=\"1440\"/>\n</picture>\n</div>\n</div>\n</div>\n\n<section class=\"site-legal\"><div class=\"legal-inner\"><div class=\"legal-brand\">𝕏</div><div class=\"legal-links\"><a href=\"#\" data-route=\"terms\">Terms of Service</a><a href=\"#\" data-route=\"xrules\">X Rules</a><a href=\"#\" data-route=\"privacy\">Privacy Policy</a><a href=\"#\" data-route=\"ads\">Advertising policies</a><a href=\"#\" data-route=\"illegal\">Regulations &amp; compliance</a><a href=\"#\" data-route=\"email\">Help Center</a></div><p>© 2026 X Corp. All rights reserved. Policies, terms, privacy and regulatory information apply according to the services and features you use.</p></div></section>","ads":"<h1>X Advertising Policies</h1>\n<p>X Advertising Policies apply to monetization on X and X’s paid advertising products.</p>\n<p>Advertisers on X are responsible for their ads. This means following all applicable laws and regulations, creating honest ads, and advertising safely and respectfully.</p>\n<p>This article describes our advertising policies. Our policies require you to follow the law, but they are not legal advice.</p>\n<h2>Overview</h2>\n<p>In addition to X Ads Policies, advertisers must follow X’s Terms of Service, X Rules, and all the policies on our Help Center governing use of our services.</p><section class=\"site-legal\"><div class=\"legal-inner\"><div class=\"legal-brand\">𝕏</div><div class=\"legal-links\"><a href=\"#\" data-route=\"terms\">Terms of Service</a><a href=\"#\" data-route=\"xrules\">X Rules</a><a href=\"#\" data-route=\"privacy\">Privacy Policy</a><a href=\"#\" data-route=\"ads\">Advertising policies</a><a href=\"#\" data-route=\"illegal\">Regulations &amp; compliance</a><a href=\"#\" data-route=\"email\">Help Center</a></div><p>© 2026 X Corp. All rights reserved. Policies, terms, privacy and regulatory information apply according to the services and features you use.</p></div></section>","email":"<h1>Help with email address confirmation</h1>\n<p>When you add or change the email address attached to your account, we’ll send you an email asking you to confirm the change. In the email we send, clicking the <strong>Confirm now</strong> button lets us know the email address is yours.</p>\n<h2>I never received a confirmation email from X</h2>\n<p>If you never received an email from us, there’s a few places the email may have landed:</p>\n<ul><li><strong>Spam, junk, and bulk mail folders:</strong> Sometimes our emails are blocked or filtered as spam by certain email providers or internet service providers (ISPs), so check your spam, junk or bulk folders.</li><li><strong>Filters and tabs:</strong> Gmail users should also check the Social tab for emails from X.</li></ul>\n<h2>I got the email, but the button won’t work</h2>\n<p>If you received the email but are having trouble confirming your email address, try these steps:</p>\n<ul><li><strong>Log in to your account:</strong> You can log in before you click the Confirm now button, or we’ll ask you to log in after you click it.</li><li><strong>Resend your confirmation email:</strong> The Confirm now link may have expired for security reasons. Log in to your X account, look for the yellow prompt, select <strong>Resend confirmation</strong>, and check your email again.</li></ul>\n<h2>Nothing is working</h2>\n<p>If you’ve tried resending the email and you are still having trouble:</p>\n<ul><li><strong>Check the email address:</strong> Open your Account settings and make sure the email is entered accurately. Correct any typo or outdated address and save your changes.</li><li><strong>Try a large email provider:</strong> The page recommends trying an address with a large domain such as Gmail or Yahoo.</li></ul>\n<h2>Still need help?</h2><p><a href=\"#\">Contact us</a>.</p><section class=\"site-legal\"><div class=\"legal-inner\"><div class=\"legal-brand\">𝕏</div><div class=\"legal-links\"><a href=\"#\" data-route=\"terms\">Terms of Service</a><a href=\"#\" data-route=\"xrules\">X Rules</a><a href=\"#\" data-route=\"privacy\">Privacy Policy</a><a href=\"#\" data-route=\"ads\">Advertising policies</a><a href=\"#\" data-route=\"illegal\">Regulations &amp; compliance</a><a href=\"#\" data-route=\"email\">Help Center</a></div><p>© 2026 X Corp. All rights reserved. Policies, terms, privacy and regulatory information apply according to the services and features you use.</p></div></section>","terms":"<h1>X’s User Agreement</h1>\n<p>This User Agreement explains the rules and conditions that apply when you use X. By using X, you agree to follow this Agreement, the X Rules, and other policies that apply to the services you use.</p>\n<h2>Using X</h2>\n<p>You must use X lawfully and in a way that respects other people. You are responsible for activity carried out through your account and for keeping your account information secure.</p>\n<h2>Your content</h2>\n<p>You retain rights in content you post, subject to the rights and licenses needed for X to operate and provide its services. You should only post content you have the right to share.</p>\n<h2>Rules and enforcement</h2>\n<p>Content and accounts may be limited, removed, or suspended when they violate applicable rules or policies. Enforcement can depend on the severity and context of the violation.</p>\n<h2>Privacy and data</h2>\n<p>Your use of X is also governed by X’s Privacy Policy and applicable privacy choices and controls available through the service.</p>\n<h2>Changes and termination</h2>\n<p>X may update its services and policies from time to time. You may stop using X at any time. X may restrict or terminate access where permitted by the applicable terms and policies.</p>\n<h2>Applicable policies</h2>\n<p>These terms should be read together with the X Rules, Privacy Policy, and other product-specific policies that apply to your use of X.</p><section class=\"site-legal\"><div class=\"legal-inner\"><div class=\"legal-brand\">𝕏</div><div class=\"legal-links\"><a href=\"#\" data-route=\"terms\">Terms of Service</a><a href=\"#\" data-route=\"xrules\">X Rules</a><a href=\"#\" data-route=\"privacy\">Privacy Policy</a><a href=\"#\" data-route=\"ads\">Advertising policies</a><a href=\"#\" data-route=\"illegal\">Regulations &amp; compliance</a><a href=\"#\" data-route=\"email\">Help Center</a></div><p>© 2026 X Corp. All rights reserved. Policies, terms, privacy and regulatory information apply according to the services and features you use.</p></div></section>"}};
+const routes={home:'home',xrules:'xrules',content:'content',promotions:'promotions',illegal:'illegal',amplify:'amplify',terms:'terms',email:'email',ads:'ads',privacy:'privacy'};
+const titles={home:'X’s Creator Monetization Standards',xrules:'The X Rules',content:'Content Monetization Policies',promotions:'Guidelines for Promotions on X',illegal:'Our policy on illegal or certain regulated goods and services',amplify:'Amplify Publisher FAQs',terms:'X’s User Agreement',email:'X email address confirmation',ads:'X Ads Policy',privacy:'Privacy Policy'};
+
+function escapeHTML(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function routeFromHash(){return location.hash.replace(/^#\/?/,'')||'home';}
+
+function pageHTML(route){
+ if(route==='home') return DATA.home;
+ if(DATA.pages[route]) return '<article class="doc">'+DATA.pages[route]+'</article>';
+ return '<article class="doc missing"><h1>Page not found</h1><div class="notice">This help article is not available in this replica.</div><p><a href="#home">Return to X Help</a></p></article>';
+}
+
+/* Convert the copied X Help markup into functional components. */
+function cleanArticle(root){
+ // Delete blank image/picture placeholders and empty wrapper noise.
+ root.querySelectorAll('picture').forEach(p=>{
+   const img=p.querySelector('img');
+   if(!img || !img.getAttribute('src') || img.getAttribute('src').startsWith('data:image/gif')) p.remove();
+ });
+ root.querySelectorAll('p').forEach(p=>{if(!p.textContent.trim() && !p.querySelector('img')) p.remove();});
+
+ // Build actual accordions from every scraped "Learn more" button.
+ root.querySelectorAll('button').forEach(btn=>{
+   const label=btn.textContent.trim().replace(/\s+/g,' ');
+   if(!/^Learn more$/i.test(label)) return;
+   const host=btn.parentElement;
+   if(!host) return;
+
+   // The source places the detailed content in one of the following sibling descendants.
+   let detail=null;
+   for(const sib of Array.from(host.children)){
+     if(sib===btn) continue;
+     if(sib.textContent.trim()) { detail=sib; break; }
+   }
+   if(!detail){
+     // Sometimes the detail is nested after the button in its parent's parent.
+     let p=host.parentElement;
+     if(p) for(const sib of Array.from(p.children)){
+       if(sib===host) continue;
+       if(sib.textContent.trim()) { detail=sib; break; }
+     }
+   }
+   if(!detail) return;
+
+   const acc=document.createElement('div');
+   acc.className='learn-more';
+   const toggle=document.createElement('button');
+   toggle.type='button';
+   toggle.setAttribute('aria-expanded','false');
+   toggle.innerHTML='<span>Learn more</span><i class="chevron" aria-hidden="true"></i>';
+   const panel=document.createElement('div'); panel.className='learn-more-panel';
+   const content=document.createElement('div'); content.className='learn-more-content';
+   content.innerHTML=detail.innerHTML;
+   panel.appendChild(content); acc.append(toggle,panel);
+   host.replaceWith(acc);
+   if(detail.parentElement===host) detail.remove();
+   toggle.addEventListener('click',()=>{
+     const open=acc.classList.toggle('open');
+     toggle.setAttribute('aria-expanded',String(open));
+   });
+ });
+
+ // Turn common "Share this article" scrape into a compact real share control.
+ root.querySelectorAll('*').forEach(el=>{
+   if(el.children.length===0 && el.textContent.trim()==='Share this article'){
+     const holder=el.closest('div');
+     if(holder && !root.querySelector('.share-card')){
+       const card=document.createElement('section'); card.className='share-card';
+       card.innerHTML='<h4>Share this article</h4><div class="share-row">'+
+         '<button class="share-btn" data-share="copy">Copy link</button>'+
+         '<button class="share-btn" data-share="x">Post to X</button>'+
+         '<button class="share-btn" data-share="native">Share</button></div>';
+       holder.closest('div')?.replaceWith(card);
+     }
+   }
+ });
+
+ // Remove dead empty SVG-only / button-only scrape leftovers.
+ root.querySelectorAll('button').forEach(b=>{
+   if(!b.textContent.trim() && !b.getAttribute('aria-label')) b.remove();
+ });
+
+ // Add feedback/share only where an article actually contains substantial content.
+ if(!root.querySelector('.feedback') && root.querySelector('h1')){
+   const feedback=document.createElement('section'); feedback.className='feedback';
+   feedback.innerHTML='<strong>Was this article helpful?</strong><div class="feedback-buttons"><button data-feedback="yes">Yes</button><button data-feedback="no">No</button></div>';
+   root.appendChild(feedback);
+   feedback.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+     feedback.querySelector('.feedback-buttons').innerHTML='<span style="color:var(--muted)">Thanks for the feedback.</span>';
+   });
+ }
+ root.querySelectorAll('[data-share]').forEach(b=>b.addEventListener('click',async()=>{
+   const type=b.dataset.share, url=location.href;
+   if(type==='copy'){try{await navigator.clipboard.writeText(url);b.textContent='Copied';setTimeout(()=>b.textContent='Copy link',1300)}catch{}}
+   else if(type==='native' && navigator.share){navigator.share({title:document.title,url}).catch(()=>{});}
+   else if(type==='x'){window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(url),'_blank','noopener,noreferrer');}
+ }));
+}
+
+function wireLinks(){
+ document.querySelectorAll('a').forEach(a=>{
+   let route=a.dataset.route;
+   const t=a.textContent.trim().toLowerCase();
+   if(!route){
+     if(t.includes('user agreement')) route='terms';
+     else if(t==='privacy'||t.includes('privacy polic')) route='privacy'; else if(t==='safety'||t==='authenticity'||t.includes('x rules')) route='xrules';
+     else if(t.includes('ads polic')) route='ads';
+     else if(t.includes('amplify')) route='amplify';
+     else if(t.includes('promotion')) route='promotions';
+     else if(t.includes('illegal')||t.includes('regulated')) route='illegal';
+     else if(t.includes('monetization polic')) route='content';
+   }
+   if(route && routes[route]){
+     a.href='#'+route;
+     a.onclick=e=>{e.preventDefault();location.hash=route;};
+   } else if(a.getAttribute('href')==='#'){
+     a.onclick=e=>e.preventDefault();
+   }
+ });
+}
+
+function buildTOC(root){
+ if(location.hash==='') return;
+ const heads=[...root.querySelectorAll('h2,h3')].filter(x=>x.textContent.trim());
+ if(heads.length<3) return;
+ const toc=document.createElement('aside'); toc.className='toc';
+ toc.innerHTML='<div class="toc-title">On this page</div>';
+ heads.forEach((h,i)=>{
+   if(!h.id) h.id='section-'+i;
+   const a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent.trim();
+   a.onclick=()=>setTimeout(()=>{document.querySelectorAll('.toc a').forEach(x=>x.classList.remove('active'));a.classList.add('active')},50);
+   toc.appendChild(a);
+ });
+ root.parentElement.classList.add('article-shell');root.parentElement.prepend(toc);
+}
+
+function render(){
+ let r=routeFromHash(); if(!routes[r]) r='home';
+ document.title=titles[r]||'X Help';
+ const app=document.getElementById('app'); app.innerHTML=pageHTML(r);
+ const back=document.getElementById('backBtn'); back.style.display=r==='home'?'none':'block';
+ cleanArticle(app);
+ wireLinks(); buildTOC(app.querySelector('.doc')||app);
+ window.scrollTo({top:0,behavior:'instant'});
+}
+
+document.getElementById('homeBtn').onclick=()=>location.hash='home';
+document.getElementById('backBtn').onclick=()=>history.back();
+const topBtn=document.getElementById('backtop');
+window.addEventListener('scroll',()=>topBtn.classList.toggle('show',scrollY>600));
+topBtn.onclick=()=>scrollTo({top:0,behavior:'smooth'});
+
+document.querySelectorAll('[data-footer="dead"]').forEach(a=>{
+  a.addEventListener('click',e=>e.preventDefault());
+});
+
+window.addEventListener('hashchange',render);
+render();
+</script>
+</body>
+</html>
