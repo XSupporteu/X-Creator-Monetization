@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05090c">
+<meta name="description" content="XSupport provides information and support services for traders, including proprietary trading firms, market news, trading strategies, and educational resources.">
+<title>XSupport · Information and support for traders</title>
+<style>
+  /* TOKENS: change a value here and it updates everywhere */
+  :root{--bg:#05090c;--ink:#f3f7f6;--mut:rgba(243,247,246,.66);--line:rgba(255,255,255,.14);--glass:rgba(255,255,255,.06);
+    --acc:#c0cbd7;--acc2:#e1e5eb;--grad:linear-gradient(120deg,#9ca9b9,#e1e5eb);--up:#86b9aa;--dn:#ff8f7e;
+    --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Helvetica Neue",Roboto,Arial,sans-serif;--ease:cubic-bezier(.22,1,.36,1)}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  button,input,textarea{font:inherit;color:inherit}
+  button{cursor:pointer}
+  svg{display:block}
+  h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.035em;line-height:1.04}
+  p{margin:0}
+  a{color:inherit}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 24px;border-radius:999px;border:1px solid var(--line);background:var(--glass);
+    -webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);font-weight:600;font-size:16px;transition:transform .35s var(--ease),background .2s}
+  .btn:active{transform:scale(.96)}
+  .btn.pri{background:var(--grad);color:#10151d;border-color:transparent;box-shadow:0 10px 30px rgba(160,174,192,.25)}
+  .btn.w{width:100%}
+  .btn svg{width:22px;height:22px}
+
+  .brand-img{width:34px;height:34px;object-fit:contain;flex:none}
+  /* NAV */
+  .nav{position:sticky;top:8px;z-index:30;margin:calc(env(safe-area-inset-top) + 8px) 14px -72px;height:62px;padding:0 6px 0 18px;display:flex;align-items:center;justify-content:space-between;
+    border-radius:999px;border:1px solid var(--line);background:rgba(10,18,22,.55);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%)}
+  .logo{display:flex;align-items:center;gap:9px;font-size:22px;font-weight:700;letter-spacing:-.04em;text-decoration:none}
+  .mk{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--grad);color:#10151d;font-style:normal;font-weight:800;font-size:19px}
+  .ic{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;padding:0;border:1px solid var(--line);background:var(--glass)}
+
+  /* HERO */
+  .hero{position:relative;overflow:hidden;padding:96px 20px 40px}
+  .aur{position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 40% at 80% 0%,rgba(160,174,192,.22),transparent 70%),radial-gradient(50% 40% at 0% 40%,rgba(80,140,255,.18),transparent 70%)}
+  .aur i{position:absolute;border-radius:50%;filter:blur(60px);animation:fl 16s ease-in-out infinite alternate}
+  .a1{width:260px;height:260px;right:-80px;top:20%;background:rgba(160,174,192,.18)}
+  .a2{width:300px;height:300px;left:-120px;bottom:0;background:rgba(140,153,172,.1);animation-delay:-7s}
+  @keyframes fl{to{transform:translate(40px,-30px) scale(1.2)}}
+  .hero>*:not(.aur){position:relative}
+  .card{padding:18px;border-radius:26px;border:1px solid var(--line);background:rgba(12,22,26,.6);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);margin-bottom:28px}
+  .auth{display:flex;flex-direction:column;gap:12px}
+  .wb{font-size:26px;text-align:center}
+  .or{display:flex;align-items:center;gap:10px;color:var(--mut);font-size:12px}
+  .or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+  .inl{display:flex;gap:8px}
+  .inl .btn{padding:0 18px;flex:none}
+  input,textarea{width:100%;height:52px;padding:0 16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:16px;outline:none;transition:border-color .2s}
+  textarea{height:110px;padding:14px 16px;resize:none}
+  input:focus,textarea:focus{border-color:var(--acc)}
+  input::placeholder,textarea::placeholder{color:rgba(243,247,246,.4)}
+  .new{text-align:center;color:var(--mut);font-size:15px}
+  .new a{color:#fff;font-weight:600;text-decoration:underline;cursor:pointer}
+  .chip{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--glass);font-size:14px;margin-bottom:16px}
+  .chip b{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 12px var(--acc)}
+  h1{font-size:clamp(38px,11.4vw,58px)}
+  h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{margin:18px 0 24px;font-size:clamp(17px,4.8vw,21px);line-height:1.45;color:var(--mut)}
+  .row{display:flex;gap:10px}.row .btn{flex:1;padding:0 10px;font-size:15px;white-space:nowrap}
+
+  /* TICKER */
+  .tick{overflow:hidden;border-block:1px solid var(--line);background:rgba(255,255,255,.03)}
+  .track{display:flex;width:max-content;animation:sl 60s linear infinite}
+  .tick:hover .track{animation-play-state:paused}
+  @keyframes sl{to{transform:translateX(-50%)}}
+  .ti{display:flex;align-items:baseline;gap:8px;padding:13px 20px;white-space:nowrap;font-size:14px;font-variant-numeric:tabular-nums}
+  .ti b{font-weight:700}
+  .topics .track{animation-duration:45s}
+  .topics span{padding:12px 22px;white-space:nowrap;color:var(--mut);font-size:15px}
+  .topics span::before{content:"✦ ";color:var(--acc)}
+
+  /* SECTIONS */
+  .sec{padding:68px 20px 4px;max-width:620px;margin:0 auto;scroll-margin-top:84px}
+  .eb{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:12px}
+  h2{font-size:clamp(32px,9.4vw,44px);margin-bottom:14px}
+  .lead{font-size:17px;line-height:1.5;color:var(--mut)}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+  .gc{padding:18px;border-radius:24px;border:1px solid var(--line);background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.03))}
+  .gc .i{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:rgba(160,174,192,.14);color:var(--acc);margin-bottom:14px}
+  .gc h3{font-size:19px;margin-bottom:6px}.gc p{font-size:14px;line-height:1.45;color:var(--mut)}
+
+  .tabs{display:flex;gap:6px;padding:5px;margin:22px 0 12px;border-radius:999px;background:var(--glass);border:1px solid var(--line)}
+  .tabs button{flex:1;height:40px;border:0;border-radius:999px;background:none;font-size:14px;font-weight:600;color:var(--mut);transition:background .25s,color .25s}
+  .tabs button.on{background:var(--grad);color:#10151d}
+  .status{font-size:13px;color:var(--mut);margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .status button{margin-left:auto;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:none;font-size:12px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--mut)}
+  .live .dot{background:var(--up);animation:pu 1.8s infinite}
+  @keyframes pu{0%{box-shadow:0 0 0 0 rgba(124,240,168,.6)}70%{box-shadow:0 0 0 8px rgba(124,240,168,0)}}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .k{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:14px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.03))}
+  .k .s{font-weight:700;font-size:15px}.k small{color:var(--mut);font-size:12px}
+  .k b{margin-top:8px;font-size:21px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .k i{font-style:normal;font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;margin-top:6px;background:rgba(255,255,255,.08);color:var(--mut)}
+  .k i.up{background:rgba(124,240,168,.14);color:var(--up)}.k i.dn{background:rgba(255,143,126,.14);color:var(--dn)}
+  .mov{margin-top:12px;padding:16px 18px;border-radius:22px;background:rgba(160,174,192,.08);border:1px solid rgba(160,174,192,.25);font-size:14px;line-height:1.6;color:var(--mut)}
+  .mov b{color:var(--ink)}
+  #diag{margin-top:12px;font-size:12px;color:var(--mut)}
+  #diag pre{white-space:pre-wrap;margin:8px 0 0;padding:12px;border-radius:12px;background:rgba(255,255,255,.05);font-size:11px;line-height:1.5}
+
+  .path{margin-top:24px;position:relative}
+  .st{display:flex;gap:16px;padding-bottom:22px;position:relative}
+  .st::before{content:"";position:absolute;left:19px;top:42px;bottom:0;width:2px;background:var(--line)}
+  .st:last-child::before{display:none}
+  .st .n{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--grad);color:#10151d;font-weight:800}
+  .st h3{font-size:19px;margin:4px 0 4px}.st p{font-size:15px;line-height:1.45;color:var(--mut)}
+
+  .hs{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:22px -20px 0;padding:0 20px 8px;scrollbar-width:none}
+  .hs::-webkit-scrollbar{display:none}.hs>*{flex:none;scroll-snap-align:center}
+  .gd{width:250px;padding:20px;border-radius:24px;border:1px solid var(--line);background:linear-gradient(160deg,rgba(160,174,192,.14),rgba(255,255,255,.03))}
+  .gd small{color:var(--acc);font-weight:700;letter-spacing:.08em;font-size:11px}
+  .gd h3{font-size:21px;margin:10px 0 8px}.gd p{font-size:14px;line-height:1.45;color:var(--mut);margin-bottom:14px}
+  .gd a{font-weight:600;font-size:14px;color:var(--acc);text-decoration:none}
+
+  .sub-card{margin-top:22px;padding:22px;border-radius:30px;border:1px solid rgba(160,174,192,.3);background:radial-gradient(120% 90% at 90% 0%,rgba(160,174,192,.2),rgba(255,255,255,.03) 70%)}
+  .fm{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+  .ck{display:flex;gap:12px;align-items:flex-start;font-size:13px;line-height:1.5;color:var(--mut);text-align:left}
+  .ck input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:#aebaca}
+  .err{font-size:13px;color:var(--dn);min-height:0}
+  .ok{padding:18px;border-radius:20px;background:rgba(160,174,192,.12);border:1px solid rgba(160,174,192,.3);line-height:1.5}
+  .hp{position:absolute;left:-9999px;opacity:0;height:0;width:0}
+  .tg{display:flex;flex-wrap:wrap;gap:8px}
+  .tg label{padding:9px 14px;border-radius:999px;border:1px solid var(--line);font-size:14px;cursor:pointer}
+  .tg input{display:none}.tg input:checked+span{color:var(--acc)}
+  .tg label:has(input:checked){border-color:var(--acc);background:rgba(160,174,192,.12);color:var(--acc)}
+
+  details{border-bottom:1px solid var(--line);padding:18px 0}
+  summary{display:flex;justify-content:space-between;align-items:center;list-style:none;font-size:18px;font-weight:600;cursor:pointer}
+  summary::-webkit-details-marker{display:none}summary::after{content:"+";font-size:26px;transition:transform .25s}
+  details[open]>summary::after{transform:rotate(45deg)}
+  details p,details li{margin-top:12px;color:var(--mut);line-height:1.55;font-size:15px}details ul{padding-left:20px;margin:0}
+  footer{max-width:620px;margin:0 auto;padding:48px 20px calc(env(safe-area-inset-bottom) + 40px);color:var(--mut);font-size:13px;line-height:1.6}
+  .fl{display:flex;flex-wrap:wrap;gap:8px 18px;margin:18px 0}.fl a{color:var(--ink);text-decoration:none;font-weight:600;cursor:pointer}
+
+  /* SHEET (sign in / sign up / unsubscribe) */
+  .veil{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .3s}
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-width:520px;margin:0 auto;max-height:92vh;overflow:auto;transform:translateY(105%);transition:transform .5s var(--ease);
+    padding:12px 20px calc(env(safe-area-inset-bottom) + 24px);border-radius:28px 28px 0 0;background:rgba(14,24,28,.94);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%)}
+  .open .veil{opacity:1;pointer-events:auto}.open .sheet{transform:none}
+  .grab{width:40px;height:5px;border-radius:3px;background:rgba(255,255,255,.3);margin:0 auto 16px}
+  .sheet [data-view]{display:none;flex-direction:column;gap:12px}
+  .sheet [data-view].show{display:flex}
+  .sheet h3{font-size:26px;text-align:center}.sheet .mut{text-align:center;color:var(--mut);font-size:14px}
+  .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 24px);z-index:60;transform:translate(-50%,30px);opacity:0;padding:12px 18px;border-radius:999px;background:rgba(14,24,28,.95);border:1px solid var(--line);font-size:14px;transition:.4s var(--ease);pointer-events:none;max-width:90%;text-align:center}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  .rv{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.track,.aur i{animation:none}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="gg" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></symbol>
+  <symbol id="i1" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></symbol>
+  <symbol id="i2" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 5h16v14H4zM8 9h8M8 13h5"/></symbol>
+  <symbol id="i3" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-9M15 6h6v6"/></symbol>
+  <symbol id="i4" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M2 9l10-5 10 5-10 5zM6 11.5V16c3 2.5 9 2.5 12 0v-4.5"/></symbol>
+</svg>
+
+<header class="nav">
+  <a class="logo" href="#top" aria-label="XSupport home"><img class="brand-img" src="https://i.postimg.cc/vBByq3Zf/file-00000000fc88821081f5d352763d8347.png" alt="XSupport logo">Support</a>
+  <button class="ic" data-open="in" aria-label="Menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M4 9h16M4 15h16"/></svg></button>
+</header>
+
+<section class="hero" id="top">
+  <div class="aur"><i class="a1"></i><i class="a2"></i></div>
+
+  <!-- SIGN-IN: first thing on the page -->
+  <div class="card auth" id="heroAuth"></div>
+
+  <p class="chip"><b></b>Information and support for traders</p>
+  <h1>Clear information for <em>serious traders.</em></h1>
+  <p class="sub">Prop firm guides, market news, trading strategies and education, with real support behind them.</p>
+  <div class="row"><a class="btn pri" href="#resources">Explore resources</a><a class="btn" href="#briefing">Get the briefing</a></div>
+</section>
+
+<div class="tick" aria-label="Live prices"><div class="track" id="track"></div></div>
+
+<section class="sec rv" id="services">
+  <p class="eb">What we do</p>
+  <h2>Everything a trader needs to stay informed.</h2>
+  <p class="lead">XSupport provides information and support services for traders, including proprietary trading firms, market news, trading strategies, and educational resources.</p>
+  <div class="g2">
+    <div class="gc"><div class="i"><svg width="22" height="22"><use href="#i1"/></svg></div><h3>Prop firm guides</h3><p>Plain-English breakdowns of rules, drawdowns and payouts.</p></div>
+    <div class="gc"><div class="i"><svg width="22" height="22"><use href="#i2"/></svg></div><h3>Market news</h3><p>Briefings on what is moving forex, crypto and metals.</p></div>
+    <div class="gc"><div class="i"><svg width="22" height="22"><use href="#i3"/></svg></div><h3>Strategies</h3><p>Playbooks for risk, sessions and trade management.</p></div>
+    <div class="gc"><div class="i"><svg width="22" height="22"><use href="#i4"/></svg></div><h3>Education</h3><p>Learning paths from first trade to funded account.</p></div>
+  </div>
+</section>
+
+<div class="tick topics" style="margin-top:56px"><div class="track" id="topics"></div></div>
+
+<section class="sec rv" id="markets">
+  <p class="eb">Live markets</p>
+  <h2>Real prices, updating live.</h2>
+  <p class="lead">Straight from public market feeds. For information only, not trading advice.</p>
+  <div class="tabs" id="tabs"><button class="on" data-t="crypto">Crypto</button><button data-t="forex">Forex</button><button data-t="metals">Commodities</button></div>
+  <p class="status" id="status"><span class="dot"></span><span id="stxt">Connecting…</span><button id="retry">Retry</button></p>
+  <div class="grid" id="grid"></div>
+  <p class="mov" id="mov">Today’s movers appear here once prices load.</p>
+  <details id="diag"><summary style="font-size:13px">Connection details</summary><pre></pre></details>
+</section>
+
+<section class="sec rv" id="learn">
+  <p class="eb">Learn at your pace</p>
+  <h2>From first trade to funded.</h2>
+  <div class="path">
+    <div class="st"><span class="n">1</span><div><h3>Start with the basics</h3><p>Markets, order types, leverage and how a trading day works.</p></div></div>
+    <div class="st"><span class="n">2</span><div><h3>Build a plan</h3><p>Risk per trade, session timing and a journal you will actually keep.</p></div></div>
+    <div class="st"><span class="n">3</span><div><h3>Choose a prop firm wisely</h3><p>Compare rules, costs and payout terms before you pay anything.</p></div></div>
+  </div>
+</section>
+
+<section class="sec rv" id="resources">
+  <p class="eb">Resources</p>
+  <h2>Start with a guide.</h2>
+  <p class="lead">Sample titles for you to replace with your own articles.</p>
+  <div class="hs">
+    <div class="gd"><small>PROP FIRMS</small><h3>How trading challenges work</h3><p>Targets, loss limits and what “passing” really means.</p><a href="#">Read the guide →</a></div>
+    <div class="gd"><small>RISK</small><h3>Position sizing in five minutes</h3><p>A simple method to size every trade.</p><a href="#">Read the guide →</a></div>
+    <div class="gd"><small>NEWS</small><h3>Trading around major news</h3><p>Plan the event, not the headline.</p><a href="#">Read the guide →</a></div>
+    <div class="gd"><small>PSYCHOLOGY</small><h3>Handling a losing streak</h3><p>Rules that protect your account and your head.</p><a href="#">Read the guide →</a></div>
+  </div>
+</section>
+
+<section class="sec rv" id="briefing">
+  <div class="sub-card">
+    <p class="eb">The XSupport briefing</p>
+    <h2>Market news and guides in your inbox.</h2>
+    <p class="lead">Choose what you want. We only email people who opt in, and every email has an unsubscribe link.</p>
+    <form class="fm" data-form="subscribe" novalidate>
+      <input name="email" type="email" inputmode="email" autocomplete="email" placeholder="Your email address" aria-label="Email address">
+      <div class="tg" aria-label="Topics"><label><input type="checkbox" name="t" value="prop" checked><span>Prop firms</span></label><label><input type="checkbox" name="t" value="news" checked><span>Market news</span></label><label><input type="checkbox" name="t" value="strat"><span>Strategies</span></label><label><input type="checkbox" name="t" value="edu"><span>Education</span></label></div>
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="ck"><input type="checkbox" name="consent"><span>I agree to receive emails from XSupport. I can unsubscribe at any time and my details are handled as described in the <a href="/privacy-policy" data-close>Privacy Policy</a>.</span></label>
+      <p class="err"></p>
+      <button class="btn pri w" type="submit">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<section class="sec rv" id="support">
+  <p class="eb">Support</p>
+  <h2>Talk to a human.</h2>
+  <p class="lead">Questions about our content, your subscription or your account. We reply by email.</p>
+  <form class="fm" data-form="contact" novalidate style="margin-top:20px">
+    <input name="name" placeholder="Your name" autocomplete="name" aria-label="Name">
+    <input name="email" type="email" placeholder="Your email" autocomplete="email" aria-label="Email">
+    <textarea name="message" placeholder="How can we help?" aria-label="Message"></textarea>
+    <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="err"></p>
+    <button class="btn w" type="submit">Send message</button>
+  </form>
+  <div style="margin-top:30px">
+    <details><summary>What emails will I receive?</summary><p>Only what you chose: market news, guides, service updates and replies to your messages. We send a small number of emails per day.</p></details>
+    <details><summary>How do I unsubscribe?</summary><p>Use the link at the bottom of any email, or the Unsubscribe link in this site’s footer. We honor opt-outs promptly.</p></details>
+    <details><summary>Is XSupport financial advice?</summary><p>No. We provide information and education only. Trading involves substantial risk of loss.</p></details>
+  </div>
+</section>
+
+<section class="sec rv" id="legal">
+  <p class="eb">Legal</p>
+  <h2>Plain-language policies.</h2>
+  <!-- These are starter texts. Have them reviewed for your country before you publish. -->
+  <details><summary>Privacy Policy</summary><p><b>Last updated:</b> <span data-f="updated"></span></p><ul><li>We collect only what you give us: your email, name (optional) and topic choices, plus messages you send.</li><li>We use it to send the emails you asked for, answer support requests and run the site.</li><li>We do not sell your data. Our email provider, Mailjet, processes it on our behalf to deliver messages.</li><li>You can ask us to see, correct or delete your data at <span data-f="email"></span>.</li></ul></details>
+  <details><summary>Email policy</summary><ul><li>We email people who opted in. Subscribing requires an explicit tick-box, and we may ask you to confirm by email.</li><li>Marketing emails include an unsubscribe link, and we honor opt-out requests promptly.</li><li>Service updates (for example, about your account) may still be sent after you unsubscribe from marketing.</li></ul></details>
+  <details><summary>Terms of Use</summary><ul><li>Content is for information and education only.</li><li>Do not copy or resell our content without permission.</li><li>We may update the site and these terms. Continued use means you accept the changes.</li></ul></details>
+  <details><summary>Risk disclaimer</summary><p>XSupport is not a broker, investment adviser or financial institution. Nothing here is investment advice or a recommendation. Trading forex, futures, crypto and CFDs involves substantial risk, and you can lose more than you expect. Only risk money you can afford to lose. Prices shown come from third-party public feeds and may be delayed or inaccurate.</p></details>
+</section>
+
+<footer>
+  <a class="logo" href="#top"><i class="mk">X</i>Support</a>
+  <p style="margin-top:14px">Information and support services for traders: proprietary trading firms, market news, trading strategies and educational resources.</p>
+  <div class="fl"><a data-open="out">Unsubscribe</a><a href="/privacy-policy">Privacy</a><a href="#legal">Terms</a><a href="#support">Contact</a></div>
+  <p><span data-f="company"></span><br><span data-f="address"></span><br><span data-f="email"></span></p>
+  <p style="margin-top:14px;font-size:12px">© <span data-f="year"></span> XSupport. For information only. Not financial advice.</p>
+</footer>
+
+<!-- SHEET -->
+<div class="veil" id="veil"></div>
+<div class="sheet" role="dialog" aria-modal="true" aria-label="Account">
+  <div class="grab"></div>
+  <div data-view="in" class="show" id="sheetAuth"></div>
+  <form data-view="up" data-form="signup" novalidate>
+    <h3>Create your account</h3>
+    <p class="mut">Join XSupport to save guides and manage your emails.</p>
+    <input name="name" placeholder="Your name (optional)" autocomplete="name" aria-label="Name">
+    <input name="email" type="email" placeholder="Your email address" autocomplete="email" aria-label="Email">
+    <input name="password" type="password" minlength="8" autocomplete="new-password" placeholder="Create password (8+ characters)" aria-label="Password" required>
+    <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <label class="ck"><input type="checkbox" name="terms"><span>I accept the <a href="/privacy-policy">Privacy Policy</a>. Marketing emails are optional and require separate consent.</span></label>
+    <p class="err"></p>
+    <button class="btn pri w" type="submit">Create account</button>
+    <p class="new">Already have an account? <a data-open="in">Sign in</a></p>
+  </form>
+  <form data-view="out" data-form="unsub" novalidate>
+    <h3>Unsubscribe</h3>
+    <p class="mut">Enter your email address and we will stop sending you marketing emails.</p>
+    <input name="email" type="email" placeholder="Your email address" autocomplete="email" aria-label="Email">
+    <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="err"></p>
+    <button class="btn pri w" type="submit">Unsubscribe me</button>
+  </form>
+</div>
+
+<template id="auth">
+  <h2 class="wb">Welcome back</h2>
+  <p class="new">Sign in with your XSupport account</p>
+  <form class="fm" data-form="signin" novalidate>
+    <input name="email" type="email" autocomplete="email" placeholder="Email address" aria-label="Email address" required>
+    <input name="password" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password" required>
+    <p class="err" role="alert"></p>
+    <button class="btn pri w" type="submit">Sign in</button>
+  </form>
+  <p class="new">Don’t have an account? <a data-open="up">Sign up</a></p>
+</template>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+
+  // XSupport API configuration. Keep secrets only in Cloudflare Worker settings.
+  const API_BASE = "https://xsupport-api.contact-pawsofjoy.workers.dev";
+  const SITE = {company:"XSupport",email:"no-reply.atlas@xsupport.space",address:"",updated:"18 November 2026",year:new Date().getFullYear()};
+  document.querySelectorAll("[data-f]").forEach(el=>el.textContent=SITE[el.dataset.f]||"");
+  const toast = m => {const t=document.querySelector("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),3500)};
+  async function send(kind,data){
+    const r=await fetch(API_BASE+"/api/"+kind,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data),credentials:"omit"});
+    let result={};try{result=await r.json()}catch{}
+    if(!r.ok||result.ok===false)throw Error(result.error||result.message||"Request failed ("+r.status+")");
+    return result;
+  }
+  const OK={subscribe:"Subscription request submitted. Check your email for confirmation if required.",contact:"Your message was submitted.",signup:"Account created. You can now sign in.",unsub:"Unsubscribe request submitted.",signin:"Signed in successfully."};
+  document.addEventListener("submit",async e=>{
+    const f=e.target.closest("[data-form]");if(!f)return;e.preventDefault();
+    const kind=f.dataset.form,fd=new FormData(f),email=String(fd.get("email")||"").trim(),err=f.querySelector(".err")||f.parentElement.querySelector(".err");
+    const bad=m=>{if(err)err.textContent=m};
+    if(fd.get("website"))return;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))return bad("Enter a valid email address.");
+    if(kind==="subscribe"&&!fd.get("consent"))return bad("Please consent to receive the briefing.");
+    if(kind==="signup"&&!fd.get("terms"))return bad("Please accept the Privacy Policy.");
+    if(["signup","signin"].includes(kind)&&String(fd.get("password")||"").length<8)return bad("Password must be at least 8 characters.");
+    if(kind==="contact"&&!String(fd.get("message")||"").trim())return bad("Please write a message.");
+    bad("");const btn=f.querySelector('button[type="submit"]');btn.disabled=true;
+    const data=Object.fromEntries([...fd].filter(([k])=>!["website","terms","consent","t"].includes(k)));data.topics=fd.getAll("t");if(kind==="subscribe")data.consent=true;
+    try{const result=await send(kind,data);if(kind==="signin"&&result.token){sessionStorage.setItem("xsupport_session",result.token)}toast(OK[kind]);if(kind==="signin")document.body.classList.remove("open");if(kind==="signin"||kind==="signup")f.reset();else f.outerHTML='<div class="ok" role="status">'+OK[kind]+'</div>'}
+    catch(ex){bad(ex.message||"Could not connect. Try again later.")}finally{btn.disabled=false}
+  });
+  ["#heroAuth","#sheetAuth"].forEach(id=>document.querySelector(id).append(document.querySelector("#auth").content.cloneNode(true)));
+  document.addEventListener("click",e=>{
+    const o=e.target.closest("[data-open]");if(o){document.querySelectorAll(".sheet [data-view]").forEach(v=>v.classList.toggle("show",v.dataset.view===o.dataset.open));document.body.classList.add("open")}
+    if(e.target.closest("[data-close]"))document.body.classList.remove("open");
+  });
+  document.querySelector("#veil").onclick=()=>document.body.classList.remove("open");
+  addEventListener("keydown",e=>{if(e.key==="Escape")document.body.classList.remove("open")});
+
+  // ---------- 3) LIVE MARKETS: [id, label, name, coingecko id] ----------
+  const LISTS = {
+    crypto: [["BTCUSDT","BTC","Bitcoin","bitcoin"],["ETHUSDT","ETH","Ethereum","ethereum"],["SOLUSDT","SOL","Solana","solana"],["XRPUSDT","XRP","XRP","ripple"],["BNBUSDT","BNB","BNB","binancecoin"],["DOGEUSDT","DOGE","Dogecoin","dogecoin"]],
+    forex:  [["EURUSD","EUR/USD","Euro"],["GBPUSD","GBP/USD","Pound"],["USDJPY","USD/JPY","Yen"],["AUDUSD","AUD/USD","Aussie"],["USDCAD","USD/CAD","Loonie"],["USDNGN","USD/NGN","Naira"]],
+    metals: [["XAU","XAU/USD","Gold · oz"],["XAG","XAG/USD","Silver · oz"],["XPT","XPT/USD","Platinum · oz"],["HG","COPPER","Copper · lb"]]
+  };
+  const NAMES = { crypto: "Crypto", forex: "Forex", metals: "Commodities" };
+  let S = {}, FEED = {}, tab = "crypto", lastOk = 0;
+  try { S = JSON.parse(localStorage.getItem("xs") || "{}"); } catch {}
+  const set = (id, p, c) => { if (p > 0) { S[id] = { p, c: Number.isFinite(c) ? c : null, t: Date.now() }; lastOk = Date.now(); } };
+  const LOG = [], log = m => { LOG.push(new Date().toLocaleTimeString() + "  " + m); if (LOG.length > 40) LOG.shift(); const el = $("#diag pre"); if (el) el.textContent = LOG.join("\n"); };
+  const ROUTES = [u => u, u => "https://corsproxy.io/?url=" + encodeURIComponent(u), u => "https://api.allorigins.win/raw?url=" + encodeURIComponent(u)];
+  async function get(url) {   // tries direct first, then two relay services (they also get around blocked sites)
+    const host = new URL(url).host;
+    for (let i = 0; i < ROUTES.length; i++) {
+      const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 7000);
+      try { const r = await fetch(ROUTES[i](url), { signal: ctl.signal }); clearTimeout(t); if (!r.ok) throw new Error("HTTP " + r.status); const j = await r.json(); log("OK   " + host + (i ? " (relay " + i + ")" : "")); return j; }
+      catch (e) { clearTimeout(t); log("FAIL " + host + (i ? " (relay " + i + ")" : " (direct)") + ": " + (e.message || e.name)); }
+    }
+    throw new Error("unreachable");
+  }
+  let wsGot = 0, rt = 0; const soon = () => { if (!rt) rt = setTimeout(() => { rt = 0; render(); }, 1000); };
+  function binanceWS() {   // live ticks over WebSocket (CORS rules don't apply to WebSockets)
+    let w; try { w = new WebSocket("wss://stream.binance.com:9443/stream?streams=" + LISTS.crypto.map(x => x[0].toLowerCase() + "@miniTicker").join("/")); } catch { return; }
+    w.onopen = () => log("OK   Binance live stream connected");
+    w.onmessage = e => { const d = JSON.parse(e.data).data; if (!d) return; set(d.s, +d.c, (+d.c - +d.o) / +d.o * 100); FEED.crypto = 1; wsGot = 1; soon(); };
+    w.onerror = () => log("FAIL Binance live stream");
+    w.onclose = () => setTimeout(() => { if (!document.hidden) binanceWS(); }, 10000);
+  }
+  function coinbaseWS() {
+    const ids = { "BTC-USD": "BTCUSDT", "ETH-USD": "ETHUSDT", "SOL-USD": "SOLUSDT", "XRP-USD": "XRPUSDT", "DOGE-USD": "DOGEUSDT" }; let w; try { w = new WebSocket("wss://ws-feed.exchange.coinbase.com"); } catch { return; }
+    w.onopen = () => { log("OK   Coinbase live stream connected"); w.send(JSON.stringify({ type: "subscribe", product_ids: Object.keys(ids), channels: ["ticker"] })); };
+    w.onmessage = e => { const d = JSON.parse(e.data); if (d.type === "ticker" && ids[d.product_id]) { const p = +d.price, o = +d.open_24h; set(ids[d.product_id], p, o ? (p - o) / o * 100 : null); FEED.crypto = 1; soon(); } };
+  }
+  async function getCrypto() {
+    try { (await get("https://api.binance.com/api/v3/ticker/24hr?symbols=" + encodeURIComponent(JSON.stringify(LISTS.crypto.map(x => x[0]))))).forEach(x => set(x.symbol, +x.lastPrice, +x.priceChangePercent)); FEED.crypto = 1; return; } catch {}
+    try { const d = await get("https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&include_24hr_change=true&ids=" + LISTS.crypto.map(x => x[3]).join(",")); LISTS.crypto.forEach(x => d[x[3]] && set(x[0], d[x[3]].usd, d[x[3]].usd_24h_change)); FEED.crypto = 1; } catch { if (!wsGot) FEED.crypto = 0; }
+  }
+  async function getForex() {
+    const put = r => { set("EURUSD", 1 / r.EUR); set("GBPUSD", 1 / r.GBP); set("AUDUSD", 1 / r.AUD); set("USDJPY", r.JPY); set("USDCAD", r.CAD); if (r.NGN) set("USDNGN", r.NGN); FEED.forex = 1; };
+    try { put((await get("https://open.er-api.com/v6/latest/USD")).rates); } catch { try { put((await get("https://api.frankfurter.app/latest?from=USD")).rates); } catch { FEED.forex = 0; } }
+  }
+  async function getMetals() { let ok = 0; await Promise.all(["XAU", "XAG", "XPT", "HG"].map(async s => { try { set(s, (await get("https://api.gold-api.com/price/" + s)).price); ok = 1; } catch {} })); FEED.metals = ok; }
+  async function refresh(all) { await Promise.all([getCrypto(), ...(all ? [getForex(), getMetals()] : [])]); try { localStorage.setItem("xs", JSON.stringify(S)); } catch {} render(); }
+
+  const fmt = (id, p) => { const d = id === "USDJPY" ? 3 : /USD$|^USD/.test(id) && !id.endsWith("USDT") && id !== "USDNGN" ? 5 : p >= 1 ? 2 : 5; return p.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d }); };
+  const chip = s => s && s.c != null ? `<i class="${s.c >= 0 ? "up" : "dn"}">${s.c >= 0 ? "▲" : "▼"} ${Math.abs(s.c).toFixed(2)}%</i>` : `<i>${s ? "REF" : "—"}</i>`;
+  function render() {
+    $("#grid").innerHTML = LISTS[tab].map(x => `<div class="k"><span class="s">${x[1]}</span><small>${x[2]}</small><b>${S[x[0]] ? fmt(x[0], S[x[0]].p) : "—"}</b>${chip(S[x[0]])}</div>`).join("");
+    const items = Object.values(LISTS).flat().filter(x => S[x[0]]).map(x => `<span class="ti"><b>${x[1]}</b>${fmt(x[0], S[x[0]].p)}${S[x[0]].c != null ? `<span style="color:var(${S[x[0]].c >= 0 ? "--up" : "--dn"})">${S[x[0]].c >= 0 ? "▲" : "▼"}${Math.abs(S[x[0]].c).toFixed(2)}%</span>` : ""}</span>`).join("");
+    $("#track").innerHTML = items + items;
+    const mv = LISTS.crypto.filter(x => S[x[0]] && S[x[0]].c != null).sort((a, b) => S[b[0]].c - S[a[0]].c);
+    if (mv.length > 1) { const u = mv[0], d = mv[mv.length - 1]; $("#mov").innerHTML = `<b>Today’s crypto movers.</b> Strongest: ${u[2]} (${S[u[0]].c >= 0 ? "+" : ""}${S[u[0]].c.toFixed(2)}%). Weakest: ${d[2]} (${S[d[0]].c >= 0 ? "+" : ""}${S[d[0]].c.toFixed(2)}%), over the last 24 hours.`; }
+    const ok = Object.keys(NAMES).filter(k => FEED[k]), bad = Object.keys(NAMES).filter(k => FEED[k] === 0), saved = Object.values(S).reduce((m, v) => Math.max(m, v.t || 0), 0);
+    $("#status").classList.toggle("live", ok.length > 0);
+    $("#stxt").textContent = ok.length ? "Live · " + ok.map(k => NAMES[k]).join(", ") + (bad.length ? " · can’t reach " + bad.map(k => NAMES[k]).join(", ") : "")
+      : saved ? "Offline · showing prices saved " + new Date(saved).toLocaleString([], { hour: "2-digit", minute: "2-digit", day: "numeric", month: "short" })
+      : bad.length === 3 ? "Can’t reach the price feeds from this device. Tap Retry, then open Connection details." : "Connecting…";
+  }
+  $("#tabs").onclick = e => { const b = e.target.closest("[data-t]"); if (!b) return; tab = b.dataset.t; $$("#tabs button").forEach(x => x.classList.toggle("on", x === b)); render(); };
+  $("#retry").onclick = () => { log("Retry pressed"); refresh(true); };
+
+  // ---------- 4) DECORATION + MOTION ----------
+  const tp = ["Prop firm rules", "Forex", "Futures", "Crypto", "Risk management", "Market news", "Strategies", "Trading psychology", "Payout timelines", "Education"].map(t => `<span>${t}</span>`).join("");
+  $("#topics").innerHTML = tp + tp;
+  const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .08 }) : null;
+  $$(".rv").forEach(el => io ? io.observe(el) : el.classList.add("in"));
+
+  render(); log("Page opened from " + location.protocol);
+  binanceWS(); setTimeout(() => { if (!wsGot) coinbaseWS(); }, 8000);
+  refresh(true);
+  setInterval(() => { if (!document.hidden) refresh(false); }, 20000);
+  setInterval(() => { if (!document.hidden) refresh(true); }, 120000);
+</script>
+</body>
+</html>
