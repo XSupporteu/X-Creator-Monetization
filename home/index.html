@@ -336,7 +336,8 @@
     if(!r.ok||result.ok===false)throw Error(result.error||result.message||"Request failed ("+r.status+")");
     return result;
   }
-  const OK={subscribe:"Subscription request submitted. Check your email for confirmation if required.",contact:"Your message was submitted.",signup:"Account created. You can now sign in.",unsub:"Unsubscribe request submitted.",signin:"Signed in successfully."};
+  
+const OK={subscribe:"Subscription request received. Email confirmation is required.",contact:"Your message was submitted.",signup:"Account created. You can now sign in.",unsub:"Unsubscribe request submitted.",signin:"Signed in successfully."};
   document.addEventListener("submit",async e=>{
     const f=e.target.closest("[data-form]");if(!f)return;e.preventDefault();
     const kind=f.dataset.form,fd=new FormData(f),email=String(fd.get("email")||"").trim(),err=f.querySelector(".err")||f.parentElement.querySelector(".err");
